@@ -18,7 +18,6 @@ const isProduction = process.env.NODE_ENV === 'production',
 
 app = express();
 server = require('http').Server(app);
-io = require('socket.io')(server);
 favicon = require('serve-favicon');
 app.use(favicon(path.join(__dirname, 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'public')));
