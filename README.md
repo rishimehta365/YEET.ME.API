@@ -1,5 +1,5 @@
 # YEET.ME.API
-Where Milkman meets Consumer appually.
+Where Milkman meets Consumer appically.
 
 
 <!-- # Getting Started
