@@ -1,8 +1,8 @@
-# Conference Call
-A conference call implementation using WebRTC, Socket.io and Node.js.
+# YEET.ME.API
+Where Milkman meets Consumer appually.
 
 
-# Getting Started
+<!-- # Getting Started
 Just run `npm install` and you're good to go.
 
 
@@ -27,4 +27,4 @@ You can create a free xirsys account and use their free ice server. You can repl
 
 
 # Alternative
-If you prefer to use PHP Web socket (Ratchet) instead of socket.io and NodeJS, check out the PHP version [here](https://github.com/amirsanni/conference-call-ratchet).
+If you prefer to use PHP Web socket (Ratchet) instead of socket.io and NodeJS, check out the PHP version [here](https://github.com/amirsanni/conference-call-ratchet). -->
