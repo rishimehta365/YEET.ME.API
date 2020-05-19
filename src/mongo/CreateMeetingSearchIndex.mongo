@@ -1,0 +1,19 @@
+// This replaces and updates the schools collection index
+// Since only one text index can be created per collection
+// We drop the existing index and create the new one
+// Do not run for "mongodb://srankings:srankings123@ds145750.mlab.com:45750/school-rankings"! 
+// Already executed on Mlab
+db.meetings.getIndexes()
+
+db.meetings.dropIndex("keywords_text")
+
+db.meetings.createIndex({
+    meeting_id: 'text',
+}, {
+    name: 'Meeting Search Index',
+    weights: {
+      meeting_id: 10
+    }
+});
+
+db.meetings.find();
