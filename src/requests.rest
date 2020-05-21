@@ -1,9 +1,27 @@
+###### Post users
 POST http://localhost:3000/api/v1/user/login/
 Content-Type: application/json
 
 {
     "user":{
         "email_id": "raun@gmail.com",
-        "password": "rau@123"
+        "password": "raun@123"
+    }
+}
+
+###### Get All Users
+GET http://localhost:3000/api/v1/user/
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWMwNzIxNWJhYTAyZDFiODA3MjU5NzYiLCJleHAiOjE1OTAwNDc3ODcsImlhdCI6MTU5MDA0Nzc2N30.wo3KSzRdNMlMhGYaSrawrmL3SoRcr33fc7tDXuBMmnk
+Username: rau@gmail.com
+##### Token
+POST http://localhost:3000/api/v1/user/token/
+Content-Type: application/json
+
+{
+    "token": {
+        "id": "5ec07215baa02d1b80725976",
+        "email_id": "raun@gmail.com",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWMwNzIxNWJhYTAyZDFiODA3MjU5NzYiLCJleHAiOjE1ODk5MjQ4NzgsImlhdCI6MTU4OTkyMTI3OH0.h3sRhhE4SLfe-_cIOuH7Kt3uhy4sasGeZD0ceHj1Fx4"
     }
 }

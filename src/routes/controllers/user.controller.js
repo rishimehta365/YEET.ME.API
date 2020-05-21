@@ -1,7 +1,12 @@
 const passport = require('passport'),
 mongoose = require('mongoose'),
 User = mongoose.model('MilkUsers'),
-constants = require('../../constants/constants');
+constants = require('../../constants/constants'),
+jwt = require('jsonwebtoken'),
+redis = require('redis'),
+client = redis.createClient();
+
+require('dotenv').config();
 
 /* 
   {
@@ -79,7 +84,6 @@ exports.register = async (req, res, next) => {
 exports.login = (req, res, next) => {
   const { body: { user } } = req;
 
-  console.log(user)
   if(!user.email_id) {
     return res.status(422).json({
       errors: {
@@ -101,16 +105,38 @@ exports.login = (req, res, next) => {
       console.log("Info", info);
       return next(err);
     }
-
     if(passportUser) {
       return res.status(200).json({user: passportUser.toAuthJSON()});
     }
-
     return res.status(403).json({error: 'Unauthorized Access Denied!'});
   })(req, res, next);
 }
 
+
+exports.token = (req, res, next)=>{
+  const { body: { token } } = req;
+  let id = token.id,
+  email = token.email_id,
+  refreshToken = token.refreshToken;
+
+  if(refreshToken == null){
+    return res.status(401).json({error: "Unauthorized!"});
+  }
+
+  
+   
+    if(refreshToken){
+      const userToken = new User({user: {_id: id, email_id: email}});
+      const token = userToken.generateAccessJWT();
+
+    return res.status(201).json({token: token});
+    }
+
+}
+
 exports.getUserById = (req, res, next) => {
+  
+ 
   User.findById(req.params.id, (err, data) => {
     if (err) {
       return next(err);

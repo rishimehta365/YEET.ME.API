@@ -25,7 +25,7 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
-app.use(session({secret: 'secret', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false}));
+app.use(session({secret: 'secret', cookie: { maxAge: 60000, secure: true }, resave: false, saveUninitialized: false}));
 app.use(responseTime());
 app.use(passport.initialize());
 app.use(passport.session());

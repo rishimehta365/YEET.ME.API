@@ -2,9 +2,15 @@ const mongoose = require('mongoose'),
 passportLocalMongoose = require('passport-local-mongoose');
 const { Schema } = mongoose,
 bcrypt = require('bcrypt'),
-saltRounds = 10;
+saltRounds = 10,
 crypto = require('crypto'),
-jwt = require('jsonwebtoken');
+jwt = require('jsonwebtoken'),
+asyncRedis = require("async-redis"),
+client = asyncRedis.createClient();
+
+client.on("error", function (err) {
+    console.log("Error " + err);
+});
 
 require('dotenv').config();
 
@@ -84,6 +90,11 @@ UserSchema.methods.setPassword= async (password, callback)=>{
     });
 };
 
+UserSchema.methods.setUser= async (id, email_id)=>{
+    this._id = id;
+    this.email_id = email_id;
+};
+
 UserSchema.methods.validatePassword = function(password, hash, cb){
     
      bcrypt.compare(password, hash, (err, result)=>{
@@ -97,14 +108,10 @@ UserSchema.methods.validatePassword = function(password, hash, cb){
 };
 
 UserSchema.methods.generateAccessJWT = function(){
-    // const today = new Date();
-    // const expirationDate = new Date(today);
-    // expirationDate.setDate(today.getDate()+1);
-
     return jwt.sign({
         email_id: this.email_id,
         id: this._id,
-        exp: Math.floor(Date.now() / 1000) + (60),
+        exp: Math.floor(Date.now() / 1000) + (20),
     }, process.env.ACCESS_TOKEN_KEY);
 }
 
@@ -113,14 +120,19 @@ UserSchema.methods.generateRefreshJWT = function(){
     // const expirationDate = new Date(today);
     // expirationDate.setDate(today.getDate()+1);
 
-    return jwt.sign({
+    var token = jwt.sign({
         email_id: this.email_id,
         id: this._id,
-        exp: Math.floor(Date.now() / 1000) + (60*60),
+        exp: Math.floor(Date.now() / 1000) + (40),
     }, process.env.REFRESH_TOKEN_KEY);
+
+    client.set(this.email_id, token);
+
+    return token;
 }
     
 UserSchema.methods.toAuthJSON = function(){
+
         return {
             _id: this._id,
             email_id: this.email_id,

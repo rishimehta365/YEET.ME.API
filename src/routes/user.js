@@ -8,7 +8,7 @@ router.post('/register', auth.optional, user_controller.register);
 
 router.post('/login', auth.optional, user_controller.login);
 
-// router.post('/token', auth.required, user_controller.getAccessToken);
+router.post('/token', auth.optional, user_controller.token);
 
 // router.delete('/logout', auth.required, user_controller.logout);
 
