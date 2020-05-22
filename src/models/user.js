@@ -6,13 +6,21 @@ saltRounds = 10,
 crypto = require('crypto'),
 jwt = require('jsonwebtoken'),
 asyncRedis = require("async-redis"),
-client = asyncRedis.createClient();
+client = asyncRedis.createClient(),
+fs = require('fs'),
+path = require('path');
+
+
 
 client.on("error", function (err) {
     console.log("Error " + err);
 });
 
 require('dotenv').config();
+
+const accessPrivateKEY  = fs.readFileSync(path.resolve(process.env.ACCESS_PRIVATE_KEY_FILE_PATH), 'utf8');
+const refreshPrivateKEY  = fs.readFileSync(path.resolve(process.env.REFRESH_PRIVATE_KEY_FILE_PATH), 'utf8');
+
 
 let UserSchema = new Schema({
     email_id: {
@@ -108,23 +116,50 @@ UserSchema.methods.validatePassword = function(password, hash, cb){
 };
 
 UserSchema.methods.generateAccessJWT = function(){
+
+    var sOptions = {
+        issuer: "Authorization/Resource/This server",
+        subject: this.email_id+"", 
+        audience: "Client_Identity" // this should be provided by client
+        };
+        
+    // Token signing options
+    var signOptions = {
+        issuer:  sOptions.issuer,
+        subject:  sOptions.subject,
+        audience:  sOptions.audience,
+        expiresIn:  "20s",    // 20 secs validity
+        algorithm:  "RS256"    // RSASSA [ "RS256", "RS384", "RS512" ]
+        };
+
     return jwt.sign({
         email_id: this.email_id,
         id: this._id,
-        exp: Math.floor(Date.now() / 1000) + (20),
-    }, process.env.ACCESS_TOKEN_KEY);
+    }, accessPrivateKEY, signOptions);
 }
 
 UserSchema.methods.generateRefreshJWT = function(){
-    // const today = new Date();
-    // const expirationDate = new Date(today);
-    // expirationDate.setDate(today.getDate()+1);
+    
+        
+    var sOptions = {
+        issuer: "Authorization/Resource/This server",
+        subject: this.email_id+"", 
+        audience: "Client_Identity" // this should be provided by client
+        };
+        
+    // Token signing options
+    var signOptions = {
+        issuer:  sOptions.issuer,
+        subject:  sOptions.subject,
+        audience:  sOptions.audience,
+        expiresIn:  "40m",    // 40 secs validity
+        algorithm:  "RS256"    
+        };
 
     var token = jwt.sign({
         email_id: this.email_id,
         id: this._id,
-        exp: Math.floor(Date.now() / 1000) + (40),
-    }, process.env.REFRESH_TOKEN_KEY);
+    }, refreshPrivateKEY, signOptions);
 
     client.set(this.email_id, token);
 

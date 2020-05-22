@@ -1,4 +1,4 @@
-###### Post users
+### USERS ### post a user
 POST http://localhost:3000/api/v1/user/login/
 Content-Type: application/json
 
@@ -9,12 +9,13 @@ Content-Type: application/json
     }
 }
 
-###### Get All Users
+### USERS ### get all users
 GET http://localhost:3000/api/v1/user/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWMwNzIxNWJhYTAyZDFiODA3MjU5NzYiLCJleHAiOjE1OTAwNDc3ODcsImlhdCI6MTU5MDA0Nzc2N30.wo3KSzRdNMlMhGYaSrawrmL3SoRcr33fc7tDXuBMmnk
-Username: rau@gmail.com
-##### Token
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWMwNzIxNWJhYTAyZDFiODA3MjU5NzYiLCJpYXQiOjE1OTAwNzY4NDYsImV4cCI6MTU5MDA3Njg2NiwiYXVkIjoiQ2xpZW50X0lkZW50aXR5IiwiaXNzIjoiQXV0aG9yaXphdGlvbi9SZXNvdXJjZS9UaGlzIHNlcnZlciIsInN1YiI6InJhdW5AZ21haWwuY29tIn0.c5IkRuLhvwmKCPAsHW-s93DEXwyR0_8zpPNLv75BnUEikXqUJXw9l9rk5H5sKX0B8AbEMNAAqQEf5pe9WSlOTQ
+Username: raun@gmail.com
+
+###USERS## retrieve access token
 POST http://localhost:3000/api/v1/user/token/
 Content-Type: application/json
 
