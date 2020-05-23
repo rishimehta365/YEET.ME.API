@@ -40,7 +40,7 @@ const validateToken = async(req, res, next) =>{
     issuer:  vOption.issuer,
     subject:  vOption.subject,
     audience:  vOption.audience,
-    expiresIn:  "40m",
+    expiresIn:  "40s",
     algorithm:  ["RS256"]
   };
 
@@ -64,7 +64,7 @@ const validateToken = async(req, res, next) =>{
         catch(err){
           if(err){
             if(err.name === "TokenExpiredError" && err.message === "jwt expired"){
-                 let redis_token = await client.get(username); 
+                 let redis_token = await client.get(username+":"+accessToken); 
                  if(!redis_token){
                   const err = new Error(`Accessing through incorrect email id!`);
                   err.status = 'error';
@@ -100,6 +100,7 @@ const validateToken = async(req, res, next) =>{
                   }
                   }catch(err){
                     if(err){
+                      
                       if(err.name === "TokenExpiredError" && err.message === "jwt expired"){
                         next(err);
                       }

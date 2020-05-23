@@ -1,4 +1,4 @@
-### USERS ### post a user
+### USERS ### authenticate a user
 POST http://localhost:3000/api/v1/user/login/
 Content-Type: application/json
 
@@ -12,7 +12,7 @@ Content-Type: application/json
 ### USERS ### get all users
 GET http://localhost:3000/api/v1/user/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWMwNzIxNWJhYTAyZDFiODA3MjU5NzYiLCJpYXQiOjE1OTAwNzY4NDYsImV4cCI6MTU5MDA3Njg2NiwiYXVkIjoiQ2xpZW50X0lkZW50aXR5IiwiaXNzIjoiQXV0aG9yaXphdGlvbi9SZXNvdXJjZS9UaGlzIHNlcnZlciIsInN1YiI6InJhdW5AZ21haWwuY29tIn0.c5IkRuLhvwmKCPAsHW-s93DEXwyR0_8zpPNLv75BnUEikXqUJXw9l9rk5H5sKX0B8AbEMNAAqQEf5pe9WSlOTQ
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWMwNzIxNWJhYTAyZDFiODA3MjU5NzYiLCJpYXQiOjE1OTAyMjY1ODEsImV4cCI6MTU5MDIyNjYwMSwiYXVkIjoiQ2xpZW50X0lkZW50aXR5IiwiaXNzIjoiQXV0aG9yaXphdGlvbi9SZXNvdXJjZS9UaGlzIHNlcnZlciIsInN1YiI6InJhdW5AZ21haWwuY29tIn0.pEqqeK2khHPPeJTS8FLeyEFA1MgZ-Z2p_EyR0u5zLp4QQJKI7iGfF0DYkPOD74kqdAXEaCADV9ltsU-Kge6vbg
 Username: raun@gmail.com
 
 ###USERS## retrieve access token
@@ -26,3 +26,58 @@ Content-Type: application/json
         "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWMwNzIxNWJhYTAyZDFiODA3MjU5NzYiLCJleHAiOjE1ODk5MjQ4NzgsImlhdCI6MTU4OTkyMTI3OH0.h3sRhhE4SLfe-_cIOuH7Kt3uhy4sasGeZD0ceHj1Fx4"
     }
 }
+
+###USERS## update a user
+PUT http://localhost:3000/api/v1/user/update/5ec07215baa02d1b80725976/
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWMwNzIxNWJhYTAyZDFiODA3MjU5NzYiLCJpYXQiOjE1OTAyMjIyNDUsImV4cCI6MTU5MDIyMjI2NSwiYXVkIjoiQ2xpZW50X0lkZW50aXR5IiwiaXNzIjoiQXV0aG9yaXphdGlvbi9SZXNvdXJjZS9UaGlzIHNlcnZlciIsInN1YiI6InJhdW5AZ21haWwuY29tIn0.yPWde5oZtYMNfmUMmUjJMKE11aEWIIpTIl1u7_1NRJRRBahBeSeWEQcoBWZOHcRjUix5o6d40bv32fq1wGEp2Q
+Username: raun@gmail.com
+
+{
+    "user": {
+        "email_id": "raun@gmail.com",
+        "flat": "405",
+        "wing": "B"
+    }
+}
+
+
+
+### VENDOR ### create a vendor
+POST http://localhost:3000/api/v1/vendor/register/
+Content-Type: application/json
+
+{
+    "vendor": {
+        "email_id": "vendor@gmail.com",
+        "password": "vendor@123",
+		"first_name": "Vendor",
+		"last_name": "Singh",
+        "company_name": "Milk Dairy",
+        "milk_rate_per_kg": "75.0",
+        "city": "Pune",
+        "state": "MH",
+        "mobile_number": "7447477330",
+        "paytm_number": "7447477330",
+		"gPay_number": "7447477330",
+        "roles": "vendor",
+        "permissions": ["read"]
+	}
+}
+
+### VENDOR ### authenticate a vendor
+POST http://localhost:3000/api/v1/vendor/login/
+Content-Type: application/json
+
+{
+    "vendor":{
+        "email_id": "vendor@gmail.com",
+        "password": "vendor@123"
+    }
+}
+
+### VENDOR ### get all vendors
+GET http://localhost:3000/api/v1/vendor/
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk4ZGM5OThjMTcyMjE5NDU5M2ZkNSIsImlhdCI6MTU5MDI2Nzc4NiwiZXhwIjoxNTkwMjY3ODA2LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.sYcvGAci6iyZDXyXFV5khdUEA_Lxs72OYTjd3Sobez_kfYMLyaf7ZeiYc2CR312EOlI8Kbv7_7CniWDvXrqMEA
+Username: vendor@gmail.com

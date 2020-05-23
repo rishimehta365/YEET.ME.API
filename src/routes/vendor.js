@@ -1,16 +1,15 @@
 const router = require('express').Router(),
-vendor_controller = require('./controllers/vendor.controller');
+vendor_controller = require('./controllers/vendor.controller'),
+auth = require('./auth');
 
 
-router.post('/create', vendor_controller.createVendor);
+router.post('/register', auth.optional, vendor_controller.register);
 
-router.get('/', vendor_controller.getAllVendors);
+router.post('/login', auth.optional, vendor_controller.login);
 
-// router.get('/search/:term?', auth.optional, schools_controller.searchSchool);
+router.get('/', auth.required, vendor_controller.getAllVendors);
 
-router.get('/:id', vendor_controller.getVendorById);
-// router.delete('/:id',user_controller.deleteUser);
+router.get('/:id', auth.required, vendor_controller.getVendorById);
 
-// router.get('/find/:term?', auth.optional, schools_controller.getGeoLocSchools);
 
 module.exports = router;

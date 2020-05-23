@@ -15,12 +15,12 @@ router.post('/register', auth.optional, user_controller.register);
 
 router.post('/token', auth.optional, user_controller.token);
 
-// router.delete('/logout', auth.required, user_controller.logout);
-
 router.get('/search/:vendor?', user_controller.searchVendorUser);
 
 router.get('/:id', user_controller.getUserById);
 
-router.delete('/:id',user_controller.deleteUser);
+router.put('/update/:id', auth.required, user_controller.updateUser);
+
+//router.delete('/:id',user_controller.deleteUser);
 
 module.exports = router;

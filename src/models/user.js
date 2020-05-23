@@ -3,14 +3,11 @@ passportLocalMongoose = require('passport-local-mongoose');
 const { Schema } = mongoose,
 bcrypt = require('bcrypt'),
 saltRounds = 10,
-crypto = require('crypto'),
 jwt = require('jsonwebtoken'),
 asyncRedis = require("async-redis"),
 client = asyncRedis.createClient(),
 fs = require('fs'),
 path = require('path');
-
-
 
 client.on("error", function (err) {
     console.log("Error " + err);
@@ -47,6 +44,9 @@ let UserSchema = new Schema({
     vendor: {
         type: String
     },
+    milk :{
+        type: String
+    },
     wing: {
         type: String
     },
@@ -70,14 +70,21 @@ let UserSchema = new Schema({
         required: true,
         unique: true
     },
-    role_based: {
+    roles: {
         type: String,
         required: true,
+        default: "user"
+    },
+    permissions:
+    {   
+        type: Array,
+        required: true,
+        default: ['read']
     },
     active: {
         type: Boolean,
         default: true
-    },
+    }
 },
 {
     timestamps: true
@@ -152,27 +159,33 @@ UserSchema.methods.generateRefreshJWT = function(){
         issuer:  sOptions.issuer,
         subject:  sOptions.subject,
         audience:  sOptions.audience,
-        expiresIn:  "40m",    // 40 secs validity
+        expiresIn:  "40s",    // 40 secs validity
         algorithm:  "RS256"    
         };
 
-    var token = jwt.sign({
+    return jwt.sign({
         email_id: this.email_id,
         id: this._id,
     }, refreshPrivateKEY, signOptions);
 
-    client.set(this.email_id, token);
 
-    return token;
+ 
 }
     
 UserSchema.methods.toAuthJSON = function(){
 
+    let accessToken = this.generateAccessJWT();
+    let refreshToken = this.generateRefreshJWT();
+
+    client.set(this.email_id+":"+accessToken, refreshToken);
+
         return {
             _id: this._id,
             email_id: this.email_id,
-            accessToken: this.generateAccessJWT(),
-            refreshToken: this.generateRefreshJWT()
+            roles: this.roles,
+            permissions: this.permissions,
+            accessToken: accessToken,
+            refreshToken: refreshToken
         };
     };
 
@@ -191,7 +204,8 @@ UserSchema.methods.toAuthJSON = function(){
             city: this.city,
             state: this.state,
             mobile_number: this.mobile_number,
-            role_based: this.role_based,
+            roles: this.roles,
+            permissions: this.permissions,
             active: this.active
         };
     };
