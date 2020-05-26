@@ -42,24 +42,20 @@ Username: raun@gmail.com
 }
 
 
-
 ### VENDOR ### create a vendor
 POST http://localhost:3000/api/v1/vendor/register/
 Content-Type: application/json
 
 {
     "vendor": {
-        "email_id": "vendor@gmail.com",
+        "email_id": "vendor@gmail",
+        "email_is_verified": false,
+        "company_name": "Neel Milk",
         "password": "vendor@123",
 		"first_name": "Vendor",
 		"last_name": "Singh",
-        "company_name": "Milk Dairy",
-        "milk_rate_per_kg": "75.0",
-        "city": "Pune",
-        "state": "MH",
+        "milk": [],
         "mobile_number": "7447477330",
-        "paytm_number": "7447477330",
-		"gPay_number": "7447477330",
         "roles": "vendor",
         "permissions": ["read"]
 	}
@@ -71,8 +67,8 @@ Content-Type: application/json
 
 {
     "vendor":{
-        "email_id": "vendor@gmail.com",
-        "password": "vendor@123"
+        "email_id": "raun@gmail.com",
+        "password": "raun@123"
     }
 }
 
@@ -80,4 +76,60 @@ Content-Type: application/json
 GET http://localhost:3000/api/v1/vendor/
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk4ZGM5OThjMTcyMjE5NDU5M2ZkNSIsImlhdCI6MTU5MDI2Nzc4NiwiZXhwIjoxNTkwMjY3ODA2LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.sYcvGAci6iyZDXyXFV5khdUEA_Lxs72OYTjd3Sobez_kfYMLyaf7ZeiYc2CR312EOlI8Kbv7_7CniWDvXrqMEA
+Username: vendor@gmail.com
+
+
+### VENDOR ### map vendor milk society
+POST http://localhost:3000/api/v1/vendor/map/
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk5OWY2MDUxOTA1M2Q4YzdmZjViOSIsImlhdCI6MTU5MDQyMzMxMiwiZXhwIjoxNTkwNDIzMzMyLCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.0JX_mhs0aUSVlf0lcEKTgNchaEHIyBC7lERmRIZj9Kmlh_i4RFcDtACq-99uDfm2TyL-r6tcBX1NuTOM7cu56g
+Username: vendor@gmail.com
+
+{
+    "map_vendor_milk":{
+        "slug": "vendor-milk",
+        "vendor": "5eaf2e35b92095052c7bddc7",
+        "milk": [
+            "5eaf2e35b92095052c7bddc7"
+        ],
+        "society": [
+            "5eaf2e35b92095052c7bddc7"
+        ],
+        "roles": "vendor",
+        "permissions": "read",
+        "active": true
+    }
+}
+
+### SOCIETY ### create society
+POST http://localhost:3000/api/v1/society/create/
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk5OWY2MDUxOTA1M2Q4YzdmZjViOSIsImlhdCI6MTU5MDQxNTkyNywiZXhwIjoxNTkwNDE1OTQ3LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.KKkTkAdXlqjSIaHNnUVbWfvpNFiEQWvAYIGmUV9dG2ouCqieyzKyygAujtcZySVTv8jKtPOhQ3uod0nG8gTqTg
+Username: vendor@gmail.com
+
+{
+    "society": {
+        "society_name": "Bhagwati Royale",
+        "area_name": "Wakad",
+        "vendor": []
+	}
+}
+
+### LOCATION ### create location
+POST http://localhost:3000/api/v1/location/create/
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk5OWY2MDUxOTA1M2Q4YzdmZjViOSIsImlhdCI6MTU5MDQxNTkyNywiZXhwIjoxNTkwNDE1OTQ3LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.KKkTkAdXlqjSIaHNnUVbWfvpNFiEQWvAYIGmUV9dG2ouCqieyzKyygAujtcZySVTv8jKtPOhQ3uod0nG8gTqTg
+Username: vendor@gmail.com
+
+{
+    "location": {
+        "location_name": "Surat",
+        "parent": "5eccf6a35f7c972518255a72"
+	}
+}
+
+### LOCATION ### get location by parent id
+GET http://localhost:3000/api/v1/location/parent/5eccf6a95f7c972518255a73/
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk5OWY2MDUxOTA1M2Q4YzdmZjViOSIsImlhdCI6MTU5MDQxNTkyNywiZXhwIjoxNTkwNDE1OTQ3LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.KKkTkAdXlqjSIaHNnUVbWfvpNFiEQWvAYIGmUV9dG2ouCqieyzKyygAujtcZySVTv8jKtPOhQ3uod0nG8gTqTg
 Username: vendor@gmail.com

@@ -10,7 +10,7 @@ var Society = require('../../models/society'),
   {
 	"society": {
       "society_name": "Bhagwati Royale",
-      "area_name": "Wakad"
+      "area_name": "Wakad",
     "vendor": []
 	}
 }

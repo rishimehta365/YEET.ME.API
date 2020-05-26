@@ -7,7 +7,8 @@ jwt = require('jsonwebtoken'),
 asyncRedis = require("async-redis"),
 client = asyncRedis.createClient(),
 fs = require('fs'),
-path = require('path');
+path = require('path'),
+Society = require('../models/society');
 
 client.on("error", function (err) {
     console.log("Error " + err);
@@ -45,11 +46,18 @@ let VendorSchema = new Schema({
         required: true,
         unique: true
     },
-    city: {
-        type: String
-    },
+    milk: 
+    [{ 
+        type: Schema.Types.ObjectId, 
+        ref: 'Milk',
+    }],
     state: {
-        type: String
+        type: Schema.Types.ObjectId,
+        ref: 'Location'
+    },
+    city: {
+        type: Schema.Types.ObjectId,
+        ref: 'Location'
     },
     mobile_number: {
         type: String,
@@ -140,6 +148,8 @@ VendorSchema.methods.generateAccessJWT = function(){
     return jwt.sign({
         email_id: this.email_id,
         id: this._id,
+        roles: this.roles,
+        permissions: this.permissions,
     }, accessPrivateKEY, signOptions);
 }
 
@@ -164,6 +174,8 @@ VendorSchema.methods.generateRefreshJWT = function(){
     return jwt.sign({
         email_id: this.email_id,
         id: this._id,
+        roles: this.roles,
+        permissions: this.permissions,
     }, refreshPrivateKEY, signOptions);
 }
     
@@ -193,18 +205,17 @@ VendorSchema.methods.toJSON = function(){
         first_name: this.first_name,
         last_name: this.last_name,
         company_name: this.company_name,
-        default_in_kgs: this.default_in_kgs,
-        city: this.city,
+        milk: this.milk,
         state: this.state,
+        city: this.city,
         mobile_number: this.mobile_number,
         paytm_number: this.paytm_number,
         gPay_number: this.gPay_number,
         roles: this.roles,
         permissions: this.permissions,
         active: this.active
-        
         };
     };
 
-var Vendor = mongoose.model('MilkVendors', VendorSchema);
-module.exports = Vendor;
+const Vendor = mongoose.model('MilkVendors', VendorSchema);
+module.exports = {Vendor};

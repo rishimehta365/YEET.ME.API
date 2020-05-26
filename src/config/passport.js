@@ -3,7 +3,7 @@ passport = require('passport'),
 LocalStrategy = require('passport-local');
 
 var User = require('../models/user'),
-    Vendor = require('../models/vendor');
+    {Vendor} = require('../models/vendor');
 
 passport.use('userLocal',new LocalStrategy({
     usernameField: 'user[email_id]',

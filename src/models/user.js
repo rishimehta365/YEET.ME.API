@@ -142,6 +142,8 @@ UserSchema.methods.generateAccessJWT = function(){
     return jwt.sign({
         email_id: this.email_id,
         id: this._id,
+        roles: this.roles,
+        permissions: this.permissions,
     }, accessPrivateKEY, signOptions);
 }
 
@@ -166,10 +168,9 @@ UserSchema.methods.generateRefreshJWT = function(){
     return jwt.sign({
         email_id: this.email_id,
         id: this._id,
+        roles: this.roles,
+        permissions: this.permissions,
     }, refreshPrivateKEY, signOptions);
-
-
- 
 }
     
 UserSchema.methods.toAuthJSON = function(){

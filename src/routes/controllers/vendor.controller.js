@@ -1,12 +1,7 @@
 const passport = require('passport'),
 mongoose = require('mongoose'),
-Vendor = require('../../models/vendor'),
-Milk = require('../../models/milk'),
-Society = require('../../models/society')
-constants = require('../../constants/constants'),
-url = require('url'),
-ObjectID = require('mongoose').ObjectID,
-request = require('request');
+{Vendor, VendorMilkMapping} = require('../../models/vendor'),
+constants = require('../../constants/constants');
 
    /* 
   {
@@ -49,16 +44,17 @@ exports.register = async(req, res, next) => {
 
   await Vendor.find({
     $or: [
-      {company_name: vendor.company_name}, 
+      {email_id: vendor.email_id}, 
       {mobile_number: vendor.mobile_number},
-      {vendor_name: vendor.vendor_name}
+      {company_name: vendor.company_name}
     ]
   }).then(async (data)=>{
     if(data.length>0){
-      return res.json({ error: "Vendor already exists!" });
+      return res.status(409).json({ error: constants.VENDOR_EXIST });
     }
     else{
       const createVendor = new Vendor(vendor);
+      console.log(createVendor);
       await createVendor.setPassword(vendor.password, (cb)=>{
         if(cb.success===constants.SUCCESS){
           createVendor.set("password", cb.hash);
@@ -68,20 +64,6 @@ exports.register = async(req, res, next) => {
           );
         }
       });
-  //     return createVendor.save().then((vendorData) => {
-  //       vendor.milk.forEach(milkId=>{
-  //         Milk.findByIdAndUpdate(milkId,  { $push: { vendor: vendorData.id } }, {new: true}, (err, model)=>{
-  //         }
-  //       );
-  //       });
-
-  //       vendor.society.forEach(societyId=>{
-  //         Society.findByIdAndUpdate(societyId,  { $push: { vendor: vendorData.id } }, {new: true}, (err, model)=>{
-  //         }
-  //       );
-  //       });
-  //       res.json({ vendor: createVendor });
-  // });
     }
   })
 }
@@ -121,7 +103,7 @@ exports.login = (req, res, next) => {
       return next(err);
     }
     if(passportVendor) {
-      return res.status(200).json({user: passportVendor.toAuthJSON()});
+      return res.status(200).json({vendor: passportVendor.toAuthJSON()});
     }
     return res.status(403).json({error: 'Unauthorized Access Denied!'});
   })(req, res, next);
@@ -136,7 +118,6 @@ exports.getAllVendors = (req, res, next) => {
         return res.json({vendors: data});
       });
 }
-
 
 exports.getVendorById = (req, res, next) => {
   Vendor.findById(req.params.id, (err, data) => {
