@@ -79,27 +79,12 @@ Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbm
 Username: vendor@gmail.com
 
 
-### VENDOR ### map vendor milk society
-POST http://localhost:3000/api/v1/vendor/map/
+### VENDOR ### get vendor by id
+GET http://localhost:3000/api/v1/vendor/5ecd767c64a2050d00e52b2a
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk5OWY2MDUxOTA1M2Q4YzdmZjViOSIsImlhdCI6MTU5MDQyMzMxMiwiZXhwIjoxNTkwNDIzMzMyLCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.0JX_mhs0aUSVlf0lcEKTgNchaEHIyBC7lERmRIZj9Kmlh_i4RFcDtACq-99uDfm2TyL-r6tcBX1NuTOM7cu56g
-Username: vendor@gmail.com
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWNkNzY3YzY0YTIwNTBkMDBlNTJiMmEiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkwNTgxMTM0LCJleHAiOjE1OTA1ODExNTQsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.KBekQj8EmeTvZr5ijIxW6LMEzPvS6ya4hbvc5V9UZMIueW3vHaYkIyhsOvXQscWqCgp0dDGXwDXlCKAl-J9aqw
+Username: raun@gmail.com
 
-{
-    "map_vendor_milk":{
-        "slug": "vendor-milk",
-        "vendor": "5eaf2e35b92095052c7bddc7",
-        "milk": [
-            "5eaf2e35b92095052c7bddc7"
-        ],
-        "society": [
-            "5eaf2e35b92095052c7bddc7"
-        ],
-        "roles": "vendor",
-        "permissions": "read",
-        "active": true
-    }
-}
 
 ### SOCIETY ### create society
 POST http://localhost:3000/api/v1/society/create/

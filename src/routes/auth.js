@@ -94,7 +94,8 @@ const validateToken = async(req, res, next) =>{
                       id: refreshTokenDecoded.id,
                   }, accessPrivateKEY, signOptions);
                     req.header = {
-                      authorization : "Token" + " " + token
+                      authorization : "Token" + " " + token,
+                      username: username
                     };
                   next();
                   }

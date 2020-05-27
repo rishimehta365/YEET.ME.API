@@ -17,7 +17,7 @@ router.post('/token', auth.optional, user_controller.token);
 
 router.get('/search/:vendor?', user_controller.searchVendorUser);
 
-router.get('/:id', user_controller.getUserById);
+router.get('/:id', auth.required, user_controller.getUserById);
 
 router.put('/update/:id', auth.required, user_controller.updateUser);
 

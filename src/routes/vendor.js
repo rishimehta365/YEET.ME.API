@@ -10,4 +10,6 @@ router.get('/', auth.required, vendor_controller.getAllVendors);
 
 router.get('/:id', auth.required, vendor_controller.getVendorById);
 
+router.put('/update/:id', auth.required, vendor_controller.updateVendor);
+
 module.exports = router;

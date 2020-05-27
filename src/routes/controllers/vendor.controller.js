@@ -99,7 +99,6 @@ exports.login = (req, res, next) => {
 
   return passport.authenticate('vendorLocal', { session: false }, (err, passportVendor, info) => {
     if(err) {
-      console.log("Info", info);
       return next(err);
     }
     if(passportVendor) {
@@ -120,7 +119,26 @@ exports.getAllVendors = (req, res, next) => {
 }
 
 exports.getVendorById = (req, res, next) => {
-  Vendor.findById(req.params.id, (err, data) => {
+  return Vendor.findById(req.params.id, (err, data) => {
+    if (err) {
+      return next(err);
+    }
+    return res.json({vendor: data});
+  });
+}
+
+exports.updateVendor = (req, res ,next) =>{
+  const { body: { vendor } } = req;
+
+  if(!vendor.email_id) {
+    return res.status(422).json({
+      errors: {
+        email_id: 'is required',
+      },
+    });
+  }
+
+  return Vendor.findByIdAndUpdate(req.params.id, vendor, {new:true}, (err, data) => {
     if (err) {
       return next(err);
     }
