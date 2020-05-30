@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-
-var Milk = require('../../models/milk'),
+const mongoose = require('mongoose'),
+  Milk = require('../../models/milk'),
+  {Vendor} = require('../../models/vendor'),
   url = require('url'),
   ObjectID = require('mongoose').ObjectID,
   request = require('request');
@@ -9,8 +9,9 @@ var Milk = require('../../models/milk'),
   /* 
   {
 	"milk": {
-	  "milk_name": "Amul",
-    "vendor": []
+    "milk_name": "Amul",
+    "rate_per_kgs": "45",
+    "society": []
 	}
 }
   */
@@ -18,7 +19,9 @@ var Milk = require('../../models/milk'),
  exports.createMilk = (req, res, next) => {
     const { body: { milk } } = req;
     const createMilk = new Milk(milk);
-    return createMilk.save().then(() => res.json({ milk: createMilk }));
+    return createMilk.save().then(() => 
+      Vendor.findByIdAndUpdate(milk.vendor, 
+        {"$push": { "milk": createMilk.id }}, {"new": true, "upsert": true}).then(data=>res.json({ milk: createMilk })));
   }
   
 

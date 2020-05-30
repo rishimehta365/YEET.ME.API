@@ -33,4 +33,13 @@ var Society = require('../../models/society'),
     });
   }
   
+  exports.getAllSocieties = (req, res, next) => {
+    return Society.find()
+        .then((data) => {
+          if(!data) {
+            return res.sendStatus(400);
+          }
+          return res.json({societies: data});
+        });
+  }
 

@@ -167,7 +167,7 @@ VendorSchema.methods.generateRefreshJWT = function(){
         issuer:  sOptions.issuer,
         subject:  sOptions.subject,
         audience:  sOptions.audience,
-        expiresIn:  "40s",    // 40 secs validity
+        expiresIn:  "40m",    // 40 secs validity
         algorithm:  "RS256"    
         };
 

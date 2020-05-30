@@ -40,7 +40,7 @@ const validateToken = async(req, res, next) =>{
     issuer:  vOption.issuer,
     subject:  vOption.subject,
     audience:  vOption.audience,
-    expiresIn:  "40s",
+    expiresIn:  "40m",
     algorithm:  ["RS256"]
   };
 

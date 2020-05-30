@@ -76,7 +76,7 @@ Content-Type: application/json
 GET http://localhost:3000/api/v1/vendor/
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk4ZGM5OThjMTcyMjE5NDU5M2ZkNSIsImlhdCI6MTU5MDI2Nzc4NiwiZXhwIjoxNTkwMjY3ODA2LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.sYcvGAci6iyZDXyXFV5khdUEA_Lxs72OYTjd3Sobez_kfYMLyaf7ZeiYc2CR312EOlI8Kbv7_7CniWDvXrqMEA
-Username: vendor@gmail.com
+Username: raun@gmail.com
 
 
 ### VENDOR ### get vendor by id
@@ -90,13 +90,37 @@ Username: raun@gmail.com
 POST http://localhost:3000/api/v1/society/create/
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk5OWY2MDUxOTA1M2Q4YzdmZjViOSIsImlhdCI6MTU5MDQxNTkyNywiZXhwIjoxNTkwNDE1OTQ3LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.KKkTkAdXlqjSIaHNnUVbWfvpNFiEQWvAYIGmUV9dG2ouCqieyzKyygAujtcZySVTv8jKtPOhQ3uod0nG8gTqTg
-Username: vendor@gmail.com
+Username: raun@gmail.com
 
 {
     "society": {
         "society_name": "Bhagwati Royale",
         "area_name": "Wakad",
         "vendor": []
+	}
+}
+
+### SOCIETY ### get society
+GET http://localhost:3000/api/v1/society/
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk5OWY2MDUxOTA1M2Q4YzdmZjViOSIsImlhdCI6MTU5MDQxNTkyNywiZXhwIjoxNTkwNDE1OTQ3LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.KKkTkAdXlqjSIaHNnUVbWfvpNFiEQWvAYIGmUV9dG2ouCqieyzKyygAujtcZySVTv8jKtPOhQ3uod0nG8gTqTg
+
+
+### MILK ### create milk
+POST http://localhost:3000/api/v1/milk/create/
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWNkNzY3YzY0YTIwNTBkMDBlNTJiMmEiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkwODQ1NTA3LCJleHAiOjE1OTA4NDU1MjcsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.0RuNBVSNbn-EqhGmnxk3nuOQKFIGOkKmwPM0JjYv21XZj4dNfC78NOcyNcQ4brJDof9ArD09pWr23YbPwx5lQQ
+Username: raun@gmail.com
+
+ {
+	"milk": {
+        "milk_name": "Amul",
+        "rate_per_kgs": "45",
+        "society": [{
+            "_id": "5ed21563065083173cb8d4af"
+        },{
+            "_id": "5ed22f0b065083173cb8d4b5"
+        }]
 	}
 }
 
