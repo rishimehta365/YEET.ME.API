@@ -32,7 +32,7 @@ const validateToken = async(req, res, next) =>{
     issuer:  vOption.issuer,
     subject:  vOption.subject,
     audience:  vOption.audience,
-    expiresIn:  "20s",
+    expiresIn:  process.env.ACCESS_TOKEN_EXPIRY,
     algorithm:  ["RS256"]
   };
 
@@ -40,7 +40,7 @@ const validateToken = async(req, res, next) =>{
     issuer:  vOption.issuer,
     subject:  vOption.subject,
     audience:  vOption.audience,
-    expiresIn:  "40m",
+    expiresIn:  process.env.REFRESH_TOKEN_EXPIRY,
     algorithm:  ["RS256"]
   };
 
@@ -92,6 +92,8 @@ const validateToken = async(req, res, next) =>{
                   let token=jwtoken.sign({
                       email_id: refreshTokenDecoded.email_id,
                       id: refreshTokenDecoded.id,
+                      roles: refreshTokenDecoded.roles,
+                      permissions: refreshTokenDecoded.permissions
                   }, accessPrivateKEY, signOptions);
                     req.header = {
                       authorization : "Token" + " " + token,

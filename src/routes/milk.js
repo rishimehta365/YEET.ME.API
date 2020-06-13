@@ -5,12 +5,13 @@ auth = require('./auth');
 
 router.post('/create', auth.required, milk_controller.createMilk);
 
-// router.get('/', user_controller.getAllUsers);
+router.get('/', milk_controller.getAllMilk);
 
 // router.get('/search/:vendor?', user_controller.searchVendorUser);
 
 router.get('/:id', auth.required, milk_controller.getMilkById);
-// router.delete('/:id',user_controller.deleteUser);
+
+router.put('/update/:id',milk_controller.updateMilk);
 
 // router.get('/find/:term?', auth.optional, schools_controller.getGeoLocSchools);
 

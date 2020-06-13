@@ -4,11 +4,16 @@ const { Schema } = mongoose;
 
 
 let MilkSchema = new Schema({
-    milk_name: {
+    name: {
         type: String
     },
-    rate_per_kgs: {
+    description: {
         type: String
+    },
+    priceTaxIncl: {
+        type: String,
+        required: true,
+        default: '0.0'
     },
     slug: {
         type: String

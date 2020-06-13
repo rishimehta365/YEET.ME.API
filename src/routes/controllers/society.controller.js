@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 var Society = require('../../models/society'),
   url = require('url'),
-  ObjectID = require('mongoose').ObjectID,
+  ObjectID = require('mongoose').Types.ObjectId,
   request = require('request');
 
 
@@ -34,7 +34,13 @@ var Society = require('../../models/society'),
   }
   
   exports.getAllSocieties = (req, res, next) => {
-    return Society.find()
+   
+    return Society.find({
+      $and: [
+        { city: ObjectID(req.query.city) },
+        { state: ObjectID(req.query.state) }
+    ]
+    })
         .then((data) => {
           if(!data) {
             return res.sendStatus(400);

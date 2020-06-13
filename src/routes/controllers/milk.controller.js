@@ -1,9 +1,7 @@
 const mongoose = require('mongoose'),
   Milk = require('../../models/milk'),
   {Vendor} = require('../../models/vendor'),
-  url = require('url'),
-  ObjectID = require('mongoose').ObjectID,
-  request = require('request');
+  constants = require('../../constants/constants');
 
 
   /* 
@@ -16,18 +14,58 @@ const mongoose = require('mongoose'),
 }
   */
 
- exports.createMilk = (req, res, next) => {
+ exports.createMilk = async (req, res, next) => {
     const { body: { milk } } = req;
-    const createMilk = new Milk(milk);
-    return createMilk.save().then(() => 
-      Vendor.findByIdAndUpdate(milk.vendor, 
-        {"$push": { "milk": createMilk.id }}, {"new": true, "upsert": true}).then(data=>res.json({ milk: createMilk })));
+    
+    await Milk.find({
+      $and: [
+        {name: milk.name}, 
+        {vendor: milk.vendor},
+        {slug: milk.slug}
+      ]
+    }).then(async (data) =>{
+      if(data.length>0){
+        return res.status(409).json({ error: constants.MILK_EXIST });
+      }
+      else{
+        const createMilk = new Milk(milk);
+        return createMilk.save().then(() => {
+          Vendor.findByIdAndUpdate(milk.vendor, 
+            {"$push": { "milk": createMilk.id }}, {"new": true, "upsert": true});
+            return res.json({milk: createMilk});
+        });
+      }
+    });
   }
   
 
-  
   exports.getMilkById = (req, res, next) => {
-    Milk.findById(req.params.id, (err, data) => {
+    return Milk.findById(req.params.id, (err, data) => {
+      if (err) {
+        return next(err);
+      }
+      return res.json({milk: data});
+    });
+  }
+
+
+  exports.getAllMilk = (req, res, next) => {
+    
+    return Milk.find({
+        vendor: req.query.vendor
+    })
+        .then((data) => {
+          if(!data) {
+            return res.sendStatus(400);
+          }
+          return res.json({milks: data});
+        });
+  }
+
+  exports.updateMilk = (req, res ,next) =>{
+    const { body: { milk } } = req;
+  
+    return Milk.findByIdAndUpdate(req.params.id, milk, {new:true}, (err, data) => {
       if (err) {
         return next(err);
       }

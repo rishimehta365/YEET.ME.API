@@ -141,7 +141,7 @@ VendorSchema.methods.generateAccessJWT = function(){
         issuer:  sOptions.issuer,
         subject:  sOptions.subject,
         audience:  sOptions.audience,
-        expiresIn:  "20s",    // 20 secs validity
+        expiresIn:  process.env.ACCESS_TOKEN_EXPIRY,    // 20 secs validity
         algorithm:  "RS256"    // RSASSA [ "RS256", "RS384", "RS512" ]
         };
 
@@ -167,7 +167,7 @@ VendorSchema.methods.generateRefreshJWT = function(){
         issuer:  sOptions.issuer,
         subject:  sOptions.subject,
         audience:  sOptions.audience,
-        expiresIn:  "40m",    // 40 secs validity
+        expiresIn:  process.env.REFRESH_TOKEN_EXPIRY,    // 40 secs validity
         algorithm:  "RS256"    
         };
 
@@ -189,6 +189,8 @@ VendorSchema.methods.toAuthJSON = function(){
         return {
             _id: this._id,
             email_id: this.email_id,
+            city: this.city,
+            state: this.state,
             roles: this.roles,
             permissions: this.permissions,
             accessToken: accessToken,
