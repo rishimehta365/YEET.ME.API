@@ -2,6 +2,7 @@ const passport = require('passport'),
 mongoose = require('mongoose'),
 {Vendor, VendorMilkMapping} = require('../../models/vendor'),
 constants = require('../../constants/constants');
+const { connect } = require('http2');
 
    /* 
   {
@@ -106,6 +107,23 @@ exports.login = (req, res, next) => {
     }
     return res.status(403).json({error: 'Unauthorized Access Denied!'});
   })(req, res, next);
+}
+
+
+exports.resetPassword = async(req, res, next) => {
+  const { body: { vendor } } = req;
+
+  if(vendor.password === vendor.newPassword){
+    return res.status(400).json({error: "Cannot set current password"});
+  }
+
+  await vendor.setPassword(vendor.newPassword, (cb)=>{
+    if(cb.success===constants.SUCCESS){
+      vendor.set("password", cb.hash);
+      console.log("New P: ", cb.hash);
+    }
+  });
+
 }
 
 exports.getAllVendors = (req, res, next) => {

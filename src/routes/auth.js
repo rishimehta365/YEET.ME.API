@@ -66,9 +66,6 @@ const validateToken = async(req, res, next) =>{
             if(err.name === "TokenExpiredError" && err.message === "jwt expired"){
                  let redis_token = await client.get(username+":"+accessToken); 
                  if(!redis_token){
-                  const err = new Error(`Accessing through incorrect email id!`);
-                  err.status = 'error';
-                  err.statusCode = 403;
                   next(err);
                  }
                   try{

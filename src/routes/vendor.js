@@ -6,6 +6,8 @@ router.post('/register', auth.optional, vendor_controller.register);
 
 router.post('/login', auth.optional, vendor_controller.login);
 
+router.post('/reset', auth.optional, vendor_controller.resetPassword);
+
 router.get('/', auth.required, vendor_controller.getAllVendors);
 
 router.get('/:id', auth.required, vendor_controller.getVendorById);

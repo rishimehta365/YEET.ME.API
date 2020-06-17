@@ -18,6 +18,9 @@ let MilkSchema = new Schema({
     slug: {
         type: String
     },
+    images: [{
+        type: String
+    }],
     vendor: { 
         type: Schema.Types.ObjectId, 
         ref: 'Vendor' 

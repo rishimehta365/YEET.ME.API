@@ -1,7 +1,8 @@
 const mongoose = require('mongoose'),
   Milk = require('../../models/milk'),
   {Vendor} = require('../../models/vendor'),
-  constants = require('../../constants/constants');
+  constants = require('../../constants/constants'),
+  ObjectID = require('mongoose').ObjectID;
 
 
   /* 
@@ -30,8 +31,8 @@ const mongoose = require('mongoose'),
       else{
         const createMilk = new Milk(milk);
         return createMilk.save().then(() => {
-          Vendor.findByIdAndUpdate(milk.vendor, 
-            {"$push": { "milk": createMilk.id }}, {"new": true, "upsert": true});
+          // Vendor.findByIdAndUpdate(milk.vendor, 
+          //   {"$push": { "milk": ObjectID(createMilk.id) }}, {"new": true, "upsert": true});
             return res.json({milk: createMilk});
         });
       }
@@ -62,9 +63,10 @@ const mongoose = require('mongoose'),
         });
   }
 
-  exports.updateMilk = (req, res ,next) =>{
+  exports. updateMilk = (req, res ,next) =>{
     const { body: { milk } } = req;
-  
+    
+    console.log("Milk: ", milk);
     return Milk.findByIdAndUpdate(req.params.id, milk, {new:true}, (err, data) => {
       if (err) {
         return next(err);

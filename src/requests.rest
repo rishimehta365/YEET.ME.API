@@ -61,6 +61,20 @@ Content-Type: application/json
 	}
 }
 
+### VENDOR ### reset vendor password
+POST http://localhost:3000/api/v1/vendor/reset/
+Content-Type: application/json
+
+{
+    "vendor": {
+        "email_id": "raun@gmail",
+        "password": "raun@123",
+		"newPassword": "raun@234",
+        "roles": "vendor",
+        "permissions": ["read"]
+	}
+}
+
 ### VENDOR ### authenticate a vendor
 POST http://localhost:3000/api/v1/vendor/login/
 Content-Type: application/json
@@ -109,20 +123,18 @@ Username: raun@gmail.com
 ### MILK ### create milk
 POST http://localhost:3000/api/v1/milk/create/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWNkNzY3YzY0YTIwNTBkMDBlNTJiMmEiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkyMDU1OTA1LCJleHAiOjE1OTIwNTU5MjUsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.pCdS9rgNZjGR-Ti8N8Q_dEHnFUMSiy1IenRmO9bQ375nZHB5nVVqbNIfJsZSRfD4auoRw0xEBBxqGwX6i2GfZw
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWNkNzY3YzY0YTIwNTBkMDBlNTJiMmEiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkyMTc2Mjg0LCJleHAiOjE1OTIxNzYzMDQsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.yLJGGCsRZLqeMpvUL0Ab_1UQ9DjaY8PJva5VNobhxoMgli1jA4DWXCM8KZC4tgHZgotmyapoHGRdovWYeaoFBA
 Username: raun@gmail.com
 
  {
 	"milk": {
-        "name": "Amul Milk",
-        "description": "It's a great milk",
-        "priceTaxIncl": "45.0",
+        "name": "Gauri Tezz Milk",
+        "description": "Fresh 'n' Natural",
+        "priceTaxIncl": "75.0",
         "vendor": "5ecd767c64a2050d00e52b2a",
-        "slug": "amul-milk",
+        "slug": "gau-tezz-milk",
         "society": [{
-            "_id": "5ed21563065083173cb8d4af"
-        },{
-            "_id": "5ed22f0b065083173cb8d4b5"
+            "_id": "5ed93841bd7a4d1db48ba7d0"
         }]
 	}
 }
@@ -131,6 +143,26 @@ Username: raun@gmail.com
 GET http://localhost:3000/api/v1/milk?vendor=5ecd767c64a2050d00e52b2a
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk5OWY2MDUxOTA1M2Q4YzdmZjViOSIsImlhdCI6MTU5MDQxNTkyNywiZXhwIjoxNTkwNDE1OTQ3LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.KKkTkAdXlqjSIaHNnUVbWfvpNFiEQWvAYIGmUV9dG2ouCqieyzKyygAujtcZySVTv8jKtPOhQ3uod0nG8gTqTg
+Username: raun@gmail.com
+
+### MILK ### get milk by id
+GET http://localhost:3000/api/v1/milk/5ee4d9d50c8d771404a40ff8
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWNkNzY3YzY0YTIwNTBkMDBlNTJiMmEiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkyMDgxMzM2LCJleHAiOjE1OTIwODEzNTYsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.GsnBJP3IvwtkP2S8BLHQ-AVL3gFWGS6eYe3PRfs8jpiZ4NnN-uDfie5717uWK1AC9LWHwSWA5SMftrr2Ih0CBA
+Username: raun@gmail.com
+
+### MILK ### update milk by id
+PUT http://localhost:3000/api/v1/milk/update/5ee5bcea1e53c249783f7357
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWNkNzY3YzY0YTIwNTBkMDBlNTJiMmEiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkyMzI1MzY0LCJleHAiOjE1OTIzMjUzODQsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.WAg3S-I7xd6kJ323Aj6lRHlYKJYESt1o5X85UenUb_BjZny9LIE5dlwaIeZOIM5DJ9bEr1ezLEnTRSt0ppNBcA
+Username: raun@gmail.com
+
+{
+	"milk": {
+        "_id" : "5ee5bcea1e53c249783f7357",
+        "name": "Gau Tezz Milk"
+	}
+}
 
 
 
@@ -138,7 +170,7 @@ Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbm
 POST http://localhost:3000/api/v1/location/create/
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk5OWY2MDUxOTA1M2Q4YzdmZjViOSIsImlhdCI6MTU5MDQxNTkyNywiZXhwIjoxNTkwNDE1OTQ3LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.KKkTkAdXlqjSIaHNnUVbWfvpNFiEQWvAYIGmUV9dG2ouCqieyzKyygAujtcZySVTv8jKtPOhQ3uod0nG8gTqTg
-Username: vendor@gmail.com
+Username: raun@gmail.com
 
 {
     "location": {

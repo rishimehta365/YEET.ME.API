@@ -189,6 +189,8 @@ VendorSchema.methods.toAuthJSON = function(){
         return {
             _id: this._id,
             email_id: this.email_id,
+            first_name: this.first_name,
+            last_name: this.last_name,
             city: this.city,
             state: this.state,
             roles: this.roles,
