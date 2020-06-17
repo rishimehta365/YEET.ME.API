@@ -1,16 +1,12 @@
 const router = require('express').Router(),
-society_controller = require('./controllers/society.controller');
+society_controller = require('./controllers/society.controller'),
+auth = require('./auth');
 
 
-router.post('/create', society_controller.createSociety);
+router.post('/create', auth.required, society_controller.createSociety);
 
-// router.get('/', user_controller.getAllUsers);
+router.get('/', auth.required, society_controller.getAllSocieties);
 
-// router.get('/search/:vendor?', user_controller.searchVendorUser);
-
-router.get('/:id', society_controller.getSocietyById);
-// router.delete('/:id',user_controller.deleteUser);
-
-// router.get('/find/:term?', auth.optional, schools_controller.getGeoLocSchools);
+router.get('/:id', auth.required, society_controller.getSocietyById);
 
 module.exports = router;

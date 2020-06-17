@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 router.use('/api/v1/user', require('./user'));
@@ -6,6 +5,8 @@ router.use('/api/v1/vendor', require('./vendor'));
 router.use('/api/v1/order', require('./order'));
 router.use('/api/v1/milk', require('./milk'));
 router.use('/api/v1/society', require('./society'));
+router.use('/api/v1/location', require('./location'));
+
 
 router.all('*', (req, res, next) => {
 

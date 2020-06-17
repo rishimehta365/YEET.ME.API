@@ -1,15 +1,17 @@
 const router = require('express').Router(),
-milk_controller = require('./controllers/milk.controller');
+milk_controller = require('./controllers/milk.controller'),
+auth = require('./auth');
 
 
-router.post('/create', milk_controller.createMilk);
+router.post('/create', auth.required, milk_controller.createMilk);
 
-// router.get('/', user_controller.getAllUsers);
+router.get('/', auth.required, milk_controller.getAllMilk);
 
 // router.get('/search/:vendor?', user_controller.searchVendorUser);
 
-router.get('/:id', milk_controller.getMilkById);
-// router.delete('/:id',user_controller.deleteUser);
+router.get('/:id', auth.required, milk_controller.getMilkById);
+
+router.put('/update/:id', auth.required, milk_controller.updateMilk);
 
 // router.get('/find/:term?', auth.optional, schools_controller.getGeoLocSchools);
 

@@ -1,10 +1,7 @@
 const passport = require('passport'),
 mongoose = require('mongoose'),
 User = mongoose.model('MilkUsers'),
-constants = require('../../constants/constants'),
-jwt = require('jsonwebtoken'),
-redis = require('redis'),
-client = redis.createClient();
+constants = require('../../constants/constants');
 
 require('dotenv').config();
 
@@ -16,7 +13,8 @@ require('dotenv').config();
       "password": "********",
 		  "first_name": "Brij Dairy",
 		  "last_name": "75.0",
-		  "vendor": "Nilkamal",
+      "vendor": "Nilkamal",
+      "milk": "Amul",
       "wing": "B",
       "flat": "700",
 		  "society": "Bhagwati",
@@ -24,14 +22,15 @@ require('dotenv').config();
       "city": "Pune",
       "state": "MH",
       "mobile_number": "7447477330",
-      "role_based": "User"
+      "roles": "user",
+      "permissions": ['read']
 	  }
   }
 */
 
 exports.register = async (req, res, next) => {
   const { body: { user } } = req;
-  
+
   if(!user.email_id) {
     return res.status(422).json({
       errors: {
@@ -63,7 +62,9 @@ exports.register = async (req, res, next) => {
         if(cb.success===constants.SUCCESS){
           createUser.set("password", cb.hash);
           return createUser.save()
-            .then(() => res.status(201).json({ statusMessage: constants.ON_REGISTER_SUCCESS }));
+            .then(() => res.status(201).json({ statusMessage: constants.ON_REGISTER_SUCCESS })
+            ).catch((err)=> next(err)
+          );
         }
       });
     }
@@ -100,7 +101,7 @@ exports.login = (req, res, next) => {
     });
   }
 
-  return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
+  return passport.authenticate('userLocal', { session: false }, (err, passportUser, info) => {
     if(err) {
       console.log("Info", info);
       return next(err);
@@ -122,22 +123,17 @@ exports.token = (req, res, next)=>{
   if(refreshToken == null){
     return res.status(401).json({error: "Unauthorized!"});
   }
-
-  
    
-    if(refreshToken){
-      const userToken = new User({user: {_id: id, email_id: email}});
-      const token = userToken.generateAccessJWT();
-
+  if(refreshToken){
+    const userToken = new User({user: {_id: id, email_id: email}});
+    const token = userToken.generateAccessJWT();
     return res.status(201).json({token: token});
-    }
+  }
 
 }
 
 exports.getUserById = (req, res, next) => {
-  
- 
-  User.findById(req.params.id, (err, data) => {
+  return User.findById(req.params.id, (err, data) => {
     if (err) {
       return next(err);
     }
@@ -153,6 +149,25 @@ exports.getAllUsers = (req, res, next) => {
         }
         return res.json({user: data});
       });
+}
+
+exports.updateUser = (req, res ,next) =>{
+  const { body: { user } } = req;
+
+  if(!user.email_id) {
+    return res.status(422).json({
+      errors: {
+        email_id: 'is required',
+      },
+    });
+  }
+
+  return User.findByIdAndUpdate(req.params.id, user, {new:true}, (err, data) => {
+    if (err) {
+      return next(err);
+    }
+    return res.json({user: data});
+  });
 }
 
 exports.searchVendorUser = (req, res, next) => {

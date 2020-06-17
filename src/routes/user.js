@@ -2,20 +2,25 @@ const router = require('express').Router(),
 user_controller = require('./controllers/user.controller'),
 auth = require('./auth');
 
-router.get('/', auth.required, user_controller.getAllUsers);
+var guard = require('express-jwt-permissions')({
+    requestProperty: 'identity',
+    permissionsProperty: 'scope'
+  });
 
-router.post('/register', auth.optional, user_controller.register);
+router.get('/', auth.required, user_controller.getAllUsers);
 
 router.post('/login', auth.optional, user_controller.login);
 
-router.post('/token', auth.optional, user_controller.token);
+router.post('/register', auth.optional, user_controller.register);
 
-// router.delete('/logout', auth.required, user_controller.logout);
+router.post('/token', auth.optional, user_controller.token);
 
 router.get('/search/:vendor?', user_controller.searchVendorUser);
 
-router.get('/:id', user_controller.getUserById);
+router.get('/:id', auth.required, user_controller.getUserById);
 
-router.delete('/:id',user_controller.deleteUser);
+router.put('/update/:id', auth.required, user_controller.updateUser);
+
+//router.delete('/:id',user_controller.deleteUser);
 
 module.exports = router;
