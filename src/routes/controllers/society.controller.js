@@ -5,24 +5,11 @@ var Society = require('../../models/society'),
   ObjectID = require('mongoose').Types.ObjectId,
   request = require('request');
 
-
-  /* 
-  {
-	"society": {
-      "society_name": "Bhagwati Royale",
-      "area_name": "Wakad",
-    "vendor": []
-	}
-}
-  */
-
  exports.createSociety = (req, res, next) => {
     const { body: { society } } = req;
     const createSociety = new Society(society);
     return createSociety.save().then(() => res.json({ society: createSociety }));
   }
-  
-
   
   exports.getSocietyById = (req, res, next) => {
     Society.findById(req.params.id, (err, data) => {

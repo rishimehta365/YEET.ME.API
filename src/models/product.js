@@ -3,22 +3,23 @@ const { Schema } = mongoose;
 
 
 
-let MilkSchema = new Schema({
+let ProductSchema = new Schema({
     name: {
+        type: String
+    },
+    slug: {
         type: String
     },
     description: {
         type: String
     },
     priceTaxIncl: {
-        type: String,
+        type: Number,
         required: true,
-        default: '0.0'
-    },
-    slug: {
-        type: String
+        default: 0.0
     },
     images: [{
+        url: String,
         type: String
     }],
     vendor: { 
@@ -42,7 +43,10 @@ let MilkSchema = new Schema({
         required: true,
         default: true
     }
+},
+{
+    timestamps: true
 });
 
-var Milk = mongoose.model('Milk', MilkSchema);
-module.exports = Milk;
+var Product = mongoose.model('Product', ProductSchema);
+module.exports = Product;

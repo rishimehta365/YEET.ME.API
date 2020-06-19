@@ -19,8 +19,8 @@ const accessPrivateKEY  = fs.readFileSync(path.resolve(process.env.ACCESS_PRIVAT
 const refreshPrivateKEY  = fs.readFileSync(path.resolve(process.env.REFRESH_PRIVATE_KEY_FILE_PATH), 'utf8');
 
 
-let UserSchema = new Schema({
-    email_id: {
+let CustomerSchema = new Schema({
+    email: {
         type: String,
         required: true,
         unique: true
@@ -33,47 +33,44 @@ let UserSchema = new Schema({
         type: String,
         required: true
     },
-    first_name: {
+    firstName: {
         type: String,
         required: true,
     },
-    last_name: {
+    lastName: {
         type: String,
         required: true,
     },
-    vendor: {
-        type: String
-    },
-    milk :{
-        type: String
-    },
-    wing: {
-        type: String
-    },
-    flat: {
+    slug: {
         type: String
     },
     society: {
-        type: String
+        type: Schema.Types.ObjectId, 
+        ref: 'Society' 
     },
-    default_in_kgs: {
-        type: String
-    },
-    city: {
-        type: String
+    shippingAddress: {
+        address: {
+            type: String
+        }
     },
     state: {
-        type: String
+        type: Schema.Types.ObjectId,
+        ref: 'Location'
     },
-    mobile_number: {
-        type: String,
+    city: {
+        type: Schema.Types.ObjectId,
+        ref: 'Location'
+    },
+    mobile: {
+        type: Number,
         required: true,
-        unique: true
+        unique: true,
+        maxlength: 10
     },
     roles: {
         type: String,
         required: true,
-        default: "user"
+        default: "customer"
     },
     permissions:
     {   
@@ -90,9 +87,9 @@ let UserSchema = new Schema({
     timestamps: true
 });
 
-UserSchema.plugin(passportLocalMongoose);
+CustomerSchema.plugin(passportLocalMongoose);
 
-UserSchema.methods.setPassword= async (password, callback)=>{
+CustomerSchema.methods.setPassword= async (password, callback)=>{
     // this.salt = crypto.randomBytes(16).toString('hex');
     // this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
 
@@ -105,12 +102,12 @@ UserSchema.methods.setPassword= async (password, callback)=>{
     });
 };
 
-UserSchema.methods.setUser= async (id, email_id)=>{
+CustomerSchema.methods.setCustomer= async (id, email)=>{
     this._id = id;
-    this.email_id = email_id;
+    this.email = email;
 };
 
-UserSchema.methods.validatePassword = function(password, hash, cb){
+CustomerSchema.methods.validatePassword = function(password, hash, cb){
     
      bcrypt.compare(password, hash, (err, result)=>{
         if(result){
@@ -122,11 +119,11 @@ UserSchema.methods.validatePassword = function(password, hash, cb){
     });
 };
 
-UserSchema.methods.generateAccessJWT = function(){
+CustomerSchema.methods.generateAccessJWT = function(){
 
     var sOptions = {
         issuer: "Authorization/Resource/This server",
-        subject: this.email_id+"", 
+        subject: this.email+"", 
         audience: "Client_Identity" // this should be provided by client
         };
         
@@ -135,24 +132,24 @@ UserSchema.methods.generateAccessJWT = function(){
         issuer:  sOptions.issuer,
         subject:  sOptions.subject,
         audience:  sOptions.audience,
-        expiresIn:  "20s",    // 20 secs validity
+        expiresIn:  process.env.ACCESS_TOKEN_EXPIRY,    // 20 secs validity
         algorithm:  "RS256"    // RSASSA [ "RS256", "RS384", "RS512" ]
         };
 
     return jwt.sign({
-        email_id: this.email_id,
+        email: this.email,
         id: this._id,
         roles: this.roles,
         permissions: this.permissions,
     }, accessPrivateKEY, signOptions);
 }
 
-UserSchema.methods.generateRefreshJWT = function(){
+CustomerSchema.methods.generateRefreshJWT = function(){
     
         
     var sOptions = {
         issuer: "Authorization/Resource/This server",
-        subject: this.email_id+"", 
+        subject: this.email+"", 
         audience: "Client_Identity" // this should be provided by client
         };
         
@@ -161,28 +158,28 @@ UserSchema.methods.generateRefreshJWT = function(){
         issuer:  sOptions.issuer,
         subject:  sOptions.subject,
         audience:  sOptions.audience,
-        expiresIn:  "40s",    // 40 secs validity
+        expiresIn:  process.env.REFRESH_TOKEN_EXPIRY,    // 40 mins validity
         algorithm:  "RS256"    
         };
 
     return jwt.sign({
-        email_id: this.email_id,
+        email: this.email,
         id: this._id,
         roles: this.roles,
         permissions: this.permissions,
     }, refreshPrivateKEY, signOptions);
 }
     
-UserSchema.methods.toAuthJSON = function(){
+CustomerSchema.methods.toAuthJSON = function(){
 
     let accessToken = this.generateAccessJWT();
     let refreshToken = this.generateRefreshJWT();
 
-    client.set(this.email_id+":"+accessToken, refreshToken);
+    client.set(this.email+":"+accessToken, refreshToken);
 
         return {
             _id: this._id,
-            email_id: this.email_id,
+            email: this.email,
             roles: this.roles,
             permissions: this.permissions,
             accessToken: accessToken,
@@ -190,10 +187,10 @@ UserSchema.methods.toAuthJSON = function(){
         };
     };
 
-    UserSchema.methods.toJSON = function(){
+    CustomerSchema.methods.toJSON = function(){
         return {
             _id: this._id,
-            email_id: this.email_id,
+            email: this.email,
             email_is_verified: this.email_is_verified,
             first_name: this.first_name,
             last_name: this.last_name,
@@ -211,5 +208,5 @@ UserSchema.methods.toAuthJSON = function(){
         };
     };
 
-var User = mongoose.model('MilkUsers', UserSchema);
-module.exports = User;
+var Customer = mongoose.model('Customer', CustomerSchema);
+module.exports = Customer;

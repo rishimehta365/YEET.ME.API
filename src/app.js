@@ -34,12 +34,12 @@ if(!isProduction){
     app.use(errorHandler());
 }
 
-mongoose.connect("mongodb://srankings:srankings123@ds145750.mlab.com:45750/school-rankings", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb://durropit:durropit123@ds157136.mlab.com:57136/durropit", {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set('debug', true);
 
-require('./models/user');
+require('./models/customer');
 require('./models/vendor');
-require('./models/milk');
+require('./models/product');
 require('./models/order');
 require('./models/society');
 require('./config/passport'); 

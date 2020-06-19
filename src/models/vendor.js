@@ -20,7 +20,7 @@ const accessPrivateKEY  = fs.readFileSync(path.resolve(process.env.ACCESS_PRIVAT
 const refreshPrivateKEY  = fs.readFileSync(path.resolve(process.env.REFRESH_PRIVATE_KEY_FILE_PATH), 'utf8');
 
 let VendorSchema = new Schema({
-    email_id: {
+    email: {
         type: String,
         required: true,
         unique: true
@@ -33,23 +33,23 @@ let VendorSchema = new Schema({
         type: String,
         required: true
     },
-    first_name: {
+    firstName: {
         type: String,
         required: true,
     },
-    last_name: {
+    lastName: {
         type: String,
         required: true,
     },
-    company_name: {
+    companyName: {
         type: String,
         required: true,
         unique: true
     },
-    milk: 
+    product: 
     [{ 
         type: Schema.Types.ObjectId, 
-        ref: 'Milk',
+        ref: 'Product',
     }],
     state: {
         type: Schema.Types.ObjectId,
@@ -59,20 +59,23 @@ let VendorSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Location'
     },
-    mobile_number: {
-        type: String,
+    mobile: {
+        type: Number,
         required: true,
-        unique: true
+        unique: true,
+        maxlength: 10
     },
-    paytm_number: {
-        type: String,
+    paytm: {
+        type: Number,
         required: false,
-        unique: true
+        unique: true,
+        maxlength: 10
     },
-    gPay_number: {
-        type: String,
+    gPay: {
+        type: Number,
         required: false,
-        unique: true
+        unique: true,
+        maxlength: 10
     },
     roles: {
         type: String,
@@ -90,8 +93,6 @@ let VendorSchema = new Schema({
         default: true
     }
   
-    // milk: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Milk' }],
-    // society: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Society' }],
 },{
     timestamps: true
 });
@@ -111,9 +112,9 @@ VendorSchema.methods.setPassword= async (password, callback)=>{
     });
 };
 
-VendorSchema.methods.setVendor= async (id, email_id)=>{
+VendorSchema.methods.setVendor= async (id, email)=>{
     this._id = id;
-    this.email_id = email_id;
+    this.email = email;
 };
 
 VendorSchema.methods.validatePassword = function(password, hash, cb){
@@ -132,7 +133,7 @@ VendorSchema.methods.generateAccessJWT = function(){
 
     var sOptions = {
         issuer: "Authorization/Resource/This server",
-        subject: this.email_id+"", 
+        subject: this.email+"", 
         audience: "Client_Identity" // this should be provided by client
         };
         
@@ -146,7 +147,7 @@ VendorSchema.methods.generateAccessJWT = function(){
         };
 
     return jwt.sign({
-        email_id: this.email_id,
+        email: this.email,
         id: this._id,
         roles: this.roles,
         permissions: this.permissions,
@@ -158,7 +159,7 @@ VendorSchema.methods.generateRefreshJWT = function(){
         
     var sOptions = {
         issuer: "Authorization/Resource/This server",
-        subject: this.email_id+"", 
+        subject: this.email+"", 
         audience: "Client_Identity" // this should be provided by client
         };
         
@@ -172,7 +173,7 @@ VendorSchema.methods.generateRefreshJWT = function(){
         };
 
     return jwt.sign({
-        email_id: this.email_id,
+        email: this.email,
         id: this._id,
         roles: this.roles,
         permissions: this.permissions,
@@ -184,13 +185,13 @@ VendorSchema.methods.toAuthJSON = function(){
     let accessToken = this.generateAccessJWT();
     let refreshToken = this.generateRefreshJWT();
 
-    client.set(this.email_id+":"+accessToken, refreshToken);
+    client.set(this.email+":"+accessToken, refreshToken);
 
         return {
             _id: this._id,
-            email_id: this.email_id,
-            first_name: this.first_name,
-            last_name: this.last_name,
+            email: this.email,
+            firstName: this.firstName,
+            lastName: this.lastName,
             city: this.city,
             state: this.state,
             roles: this.roles,
@@ -204,22 +205,22 @@ VendorSchema.methods.toJSON = function(){
 
     return {
         _id: this._id,
-        email_id: this.email_id,
+        email: this.email,
         email_is_verified: this.email_is_verified,
-        first_name: this.first_name,
-        last_name: this.last_name,
-        company_name: this.company_name,
-        milk: this.milk,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        companyName: this.companyName,
+        product: this.product,
         state: this.state,
         city: this.city,
-        mobile_number: this.mobile_number,
-        paytm_number: this.paytm_number,
-        gPay_number: this.gPay_number,
+        mobile: this.mobile,
+        paytm: this.paytm,
+        gPay: this.gPay,
         roles: this.roles,
         permissions: this.permissions,
         active: this.active
         };
     };
 
-const Vendor = mongoose.model('MilkVendors', VendorSchema);
-module.exports = {Vendor};
+const Vendor = mongoose.model('Vendor', VendorSchema);
+module.exports = Vendor;

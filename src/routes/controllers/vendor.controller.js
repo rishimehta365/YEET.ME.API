@@ -1,33 +1,13 @@
 const passport = require('passport'),
 mongoose = require('mongoose'),
-{Vendor, VendorMilkMapping} = require('../../models/vendor'),
+Vendor = require('../../models/vendor'),
 constants = require('../../constants/constants');
 const { connect } = require('http2');
-
-   /* 
-  {
-	"vendor": {
-    "email_id": "vendor@gmail.com",
-    "password": "vendor@123",
-		"first_name": "Vendor",
-		"last_name": "Singh",
-    "company_name": "Milk Dairy",
-    "milk_rate_per_kg": "75.0",
-    "city": "Pune",
-    "state": "MH",
-    "mobile_number": "7447477330",
-    "paytm_number": "7447477330",
-		"gPay_number": "7447477330",
-    "roles": "vendor",
-    "permissions": ["read"]
-	}
-}
-  */
 
 exports.register = async(req, res, next) => {
   const { body: { vendor } } = req;
 
-  if(!vendor.email_id) {
+  if(!vendor.email) {
     return res.status(422).json({
       errors: {
         email: constants.IS_REQUIRED,
@@ -45,9 +25,9 @@ exports.register = async(req, res, next) => {
 
   await Vendor.find({
     $or: [
-      {email_id: vendor.email_id}, 
-      {mobile_number: vendor.mobile_number},
-      {company_name: vendor.company_name}
+      {email: vendor.email}, 
+      {mobile: vendor.mobile},
+      {companyName: vendor.companyName}
     ]
   }).then(async (data)=>{
     if(data.length>0){
@@ -55,7 +35,6 @@ exports.register = async(req, res, next) => {
     }
     else{
       const createVendor = new Vendor(vendor);
-      console.log(createVendor);
       await createVendor.setPassword(vendor.password, (cb)=>{
         if(cb.success===constants.SUCCESS){
           createVendor.set("password", cb.hash);
@@ -69,23 +48,13 @@ exports.register = async(req, res, next) => {
   })
 }
 
-/* 
-  {
-  "vendor": 
-    {
-      "email_id": "raun@gmail.com",
-      "password": "raun@123"
-	  }
-  }
-*/
-
 exports.login = (req, res, next) => {
   const { body: { vendor } } = req;
 
-  if(!vendor.email_id) {
+  if(!vendor.email) {
     return res.status(422).json({
       errors: {
-        email_id: 'is required',
+        email: 'is required',
       },
     });
   }
@@ -148,10 +117,10 @@ exports.getVendorById = (req, res, next) => {
 exports.updateVendor = (req, res ,next) =>{
   const { body: { vendor } } = req;
 
-  if(!vendor.email_id) {
+  if(!vendor.email) {
     return res.status(422).json({
       errors: {
-        email_id: 'is required',
+        email: 'is required',
       },
     });
   }
