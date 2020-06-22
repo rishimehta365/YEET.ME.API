@@ -21,6 +21,10 @@ var Society = require('../../models/society'),
   }
   
   exports.getAllSocieties = (req, res, next) => {
+
+    if(req.query.city === "undefined" || req.query.state === "undefined"){
+      return res.status(404).json('Please complete your profile!');
+    }
    
     return Society.find({
       $and: [
@@ -29,10 +33,12 @@ var Society = require('../../models/society'),
     ]
     })
         .then((data) => {
-          if(!data) {
-            return res.sendStatus(400);
+          
+          if(!data || data.length<=0) {
+            console.log("Data: ", data);
+            return res.status(400).json("Add delivery society to continue...!\r\n" +"Go to Menu -> E-Commerce -> Society");
           }
-          return res.json({societies: data});
+          return res.status(200).json({societies: data});
         });
   }
 

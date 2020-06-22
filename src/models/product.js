@@ -30,6 +30,14 @@ let ProductSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'Society' 
     }],
+
+    /*
+    Still in question.
+    Why do I need state and city in product?
+    I'm already creation product's relationship with its vendor.
+    what's the need then?
+    Brainstorming.
+     */
     state: {
         type: Schema.Types.ObjectId,
         ref: 'Location'
@@ -38,6 +46,9 @@ let ProductSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Location'
     },
+     /*
+    ----ENDS HERE--- 
+     */
     active: {
         type: Boolean,
         required: true,

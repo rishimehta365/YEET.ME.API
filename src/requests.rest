@@ -48,14 +48,14 @@ Content-Type: application/json
 
 {
     "vendor": {
-        "email": "raun@gmail.com",
+        "email": "vendor@gmail.com",
         "email_is_verified": false,
-        "companyName": "Ronz Milk",
-        "password": "raun@123",
-		"firstName": "Raunak",
-		"lastName": "Bhansali",
+        "companyName": "Vendor Milk",
+        "password": "vendor@123",
+		"firstName": "Vendor",
+		"lastName": "Singh",
         "product": [],
-        "mobile": "7447477330",
+        "mobile": "7387191619",
         "roles": "vendor",
         "permissions": ["read"]
 	}
@@ -75,6 +75,17 @@ Content-Type: application/json
 	}
 }
 
+### VENDOR ### forgot vendor password
+POST  http://localhost:3000/api/v1/vendor/forgot/
+Content-Type: application/json
+
+{
+    "email": {
+        "email": "bhansaliraunak@gmail.com"
+	}
+}
+
+
 ### VENDOR ### authenticate a vendor
 POST http://localhost:3000/api/v1/vendor/login/
 Content-Type: application/json
@@ -82,7 +93,7 @@ Content-Type: application/json
 {
     "vendor":{
         "email": "raun@gmail.com",
-        "password": "raun@123"
+        "password": "dUXJx6KY"
     }
 }
 
@@ -103,21 +114,21 @@ Username: raun@gmail.com
 ### SOCIETY ### create society
 POST http://localhost:3000/api/v1/society/create/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk5OWY2MDUxOTA1M2Q4YzdmZjViOSIsImlhdCI6MTU5MDQxNTkyNywiZXhwIjoxNTkwNDE1OTQ3LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.KKkTkAdXlqjSIaHNnUVbWfvpNFiEQWvAYIGmUV9dG2ouCqieyzKyygAujtcZySVTv8jKtPOhQ3uod0nG8gTqTg
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWVkMWE2ZjdmYzE3YjA4MjQwZTlkMDIiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkyNzUwNjgxLCJleHAiOjE1OTI3NTA3MDEsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.gmr-DDS5KLAF0mV9R5PhUi6QmeJpN-gCHnguwMcSBj-_xSXWVRE4QTD46qByhv7HurNKNf3Gfaau9G5ilDOJhA
 Username: raun@gmail.com
 
 {
     "society": {
-        "name": "Bhagwati Royale",
-        "area": "Wakad",
-        "vendor": []
+        "name": "Akshay Park",
+        "city": "5eee00fb8ed1f82cd4e44617",
+        "state": "5eee00ee8ed1f82cd4e44616"
 	}
 }
 
 ### SOCIETY ### get all societies
-GET http://localhost:3000/api/v1/society?state=5eccf6945f7c972518255a71&city=5eccf6cc5f7c972518255a74
+GET http://localhost:3000/api/v1/society?state=5eee00ee8ed1f82cd4e44616&city=5eee00fb8ed1f82cd4e44617
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWNkNzY3YzY0YTIwNTBkMDBlNTJiMmEiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkyMDM1MTY2LCJleHAiOjE1OTIwMzUxODYsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.ZuxDfqQgjUs8BhgTlXyo8HMLQIDDqd-ZqLvDKG3P7jmxwzLJQySCR00ZGWo14gjS8sImPjLV4qnflVgvbaP_gQ
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWVkMWE2ZjdmYzE3YjA4MjQwZTlkMDIiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkyNjU2NjM2LCJleHAiOjE1OTI2NTY2NTYsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.H5Ms9ymsZAsJFlRlo3qF82P0MePlMq1SKzwK7VKHMaXOQZoLZcEzxzLC4r8CbkPiDIbi_9uVGR_1L7wo5cuBPA
 Username: raun@gmail.com
 
 ### PRODUCT ### create product
@@ -174,8 +185,8 @@ Username: raun@gmail.com
 
 {
     "location": {
-        "name": "Surat",
-        "parent": "5eccf6a35f7c972518255a72"
+        "name": "Pune",
+        "parent": "5eee00ee8ed1f82cd4e44616"  
 	}
 }
 

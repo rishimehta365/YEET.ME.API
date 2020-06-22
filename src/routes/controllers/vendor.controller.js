@@ -1,8 +1,14 @@
 const passport = require('passport'),
-mongoose = require('mongoose'),
 Vendor = require('../../models/vendor'),
-constants = require('../../constants/constants');
-const { connect } = require('http2');
+constants = require('../../constants/constants'),
+nodemailer = require('nodemailer'),
+path = require('path'),
+Email = require('email-templates');
+
+var handlebars = require('handlebars'),
+fs = require('fs'),
+
+generatePassword = require('password-generator');
 
 exports.register = async(req, res, next) => {
   const { body: { vendor } } = req;
@@ -29,21 +35,17 @@ exports.register = async(req, res, next) => {
       {mobile: vendor.mobile},
       {companyName: vendor.companyName}
     ]
-  }).then(async (data)=>{
+  }).then(async (data,err)=>{
     if(data.length>0){
       return res.status(409).json({ error: constants.VENDOR_EXIST });
     }
     else{
       const createVendor = new Vendor(vendor);
-      await createVendor.setPassword(vendor.password, (cb)=>{
-        if(cb.success===constants.SUCCESS){
-          createVendor.set("password", cb.hash);
-          return createVendor.save()
+      return createVendor.save()
             .then(() => res.status(201).json({ statusMessage: constants.ON_REGISTER_SUCCESS })
-            ).catch((err)=> next(err)
-          );
-        }
-      });
+            ).catch((err)=> {
+              next(err);
+            });
     }
   })
 }
@@ -92,6 +94,67 @@ exports.resetPassword = async(req, res, next) => {
       console.log("New P: ", cb.hash);
     }
   });
+}
+
+exports.forgotPassword = (req, res, next) => {
+  const { body : {email} } = req;
+  const emailTemplate = new Email({
+    preview: false,
+    // uncomment below to send emails in development/test env:
+    // send: true
+    send: false
+  }),
+  transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+           user: 'rishimehta365@gmail.com',
+           pass: 'puppisinghji'
+       }
+   });
+  Vendor.findOne({email: email.email}).then((vendor)=>{
+    if(vendor){
+      const updatePassword = new Vendor(vendor);
+      let generatedPassword = generatePassword(8, false);
+      updatePassword.setPassword(generatedPassword,(cb)=>{
+        if(cb.success){
+          updatePassword.set("password", cb.hash);
+          Vendor.updateOne(
+            { "_id": updatePassword._id}, // Filter
+            {$set: {"password": updatePassword.password}}, // Update
+            {upsert: true}).then((data)=>{
+
+              emailTemplate.send({
+                  template: path.join(__dirname, 'pages'),
+                  locals: {
+                    name: generatedPassword
+                    }
+                  })
+              .then(data=>{
+                
+                const mailOptions = {
+                  from: 'rishimehta365@gmail.com', // sender address
+                  to: email.email, // list of receivers
+                  subject: 'Password Reset', // Subject line
+                  html: data.originalMessage.html // plain text body
+                };
+                
+                transporter.sendMail(mailOptions, function (err, info) {
+                  if(err){
+                    return res.status(400).json("FAILED! Unable to send new password to your email.")
+                  }
+                  return res.status(200).json("New password has been sent successfully to your mail.")
+                });
+              })
+              .catch(console.error);
+          });
+       }
+    });
+  }
+    else{
+      return res.status(400).json("Email not found. Please check.")
+    }
+  });
+
 
 }
 

@@ -31,7 +31,8 @@ let VendorSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        minlength: 8
     },
     firstName: {
         type: String,
@@ -68,13 +69,11 @@ let VendorSchema = new Schema({
     paytm: {
         type: Number,
         required: false,
-        unique: true,
         maxlength: 10
     },
     gPay: {
         type: Number,
         required: false,
-        unique: true,
         maxlength: 10
     },
     roles: {
@@ -99,6 +98,23 @@ let VendorSchema = new Schema({
 
 VendorSchema.plugin(passportLocalMongoose);
 
+VendorSchema.pre("save", true , async function(next, done) {
+    var self = this;
+    if (self.password && self.password.length > 7) {
+        await bcrypt.genSalt(saltRounds, (err, salt) => {
+            bcrypt.hash(self.password, saltRounds, (err, hash) => {
+             if(err){
+                 done(null);
+                 next(err);
+             }
+                this.password = hash;
+                done(null, this);
+                next();
+         });
+         });
+    }
+});
+
 VendorSchema.methods.setPassword= async (password, callback)=>{
     // this.salt = crypto.randomBytes(16).toString('hex');
     // this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
@@ -106,7 +122,7 @@ VendorSchema.methods.setPassword= async (password, callback)=>{
    await bcrypt.genSalt(saltRounds, (err, salt) => {
        bcrypt.hash(password, saltRounds, (err, hash) => {
         if(hash.length>0){
-            callback({success: "success", hash: hash});
+            callback({success: true, hash: hash});
         }
     });
     });
