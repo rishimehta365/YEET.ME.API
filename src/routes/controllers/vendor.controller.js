@@ -1,14 +1,10 @@
 const passport = require('passport'),
-Vendor = require('../../models/vendor'),
-constants = require('../../constants/constants'),
-nodemailer = require('nodemailer'),
-path = require('path'),
-Email = require('email-templates');
-
-var handlebars = require('handlebars'),
-fs = require('fs'),
-
-generatePassword = require('password-generator');
+      Vendor = require('../../models/vendor'),
+      constants = require('../../constants/constants'),
+      nodemailer = require('nodemailer'),
+      path = require('path'),
+      Email = require('email-templates'),
+      generatePassword = require('password-generator');
 
 exports.register = async(req, res, next) => {
   const { body: { vendor } } = req;
@@ -154,8 +150,6 @@ exports.forgotPassword = (req, res, next) => {
       return res.status(400).json("Email not found. Please check.")
     }
   });
-
-
 }
 
 exports.getAllVendors = (req, res, next) => {
