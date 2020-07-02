@@ -67,9 +67,9 @@ Content-Type: application/json
 
 {
     "vendor": {
-        "email_id": "raun@gmail",
+        "email": "raun@gmail.com",
         "password": "raun@123",
-		"newPassword": "raun@234",
+		"newPassword": "raun@123",
         "roles": "vendor",
         "permissions": ["read"]
 	}
@@ -93,7 +93,7 @@ Content-Type: application/json
 {
     "vendor":{
         "email": "raun@gmail.com",
-        "password": "dUXJx6KY"
+        "password": "raun@123"
     }
 }
 
@@ -185,16 +185,19 @@ Username: raun@gmail.com
 
 {
     "location": {
-        "name": "Pune",
-        "parent": "5eee00ee8ed1f82cd4e44616"  
+        "name": "Rajasthan",
+        "parent": {
+            "_id": "5eee00d88ed1f82cd4e44615",
+            "name": "India"
+            }  
 	}
 }
 
 ### LOCATION ### get location by parent id
-GET http://localhost:3000/api/v1/location/parent/5eccf6a95f7c972518255a73/
+GET http://localhost:3000/api/v1/location/parent/5eee00ee8ed1f82cd4e44616/
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk5OWY2MDUxOTA1M2Q4YzdmZjViOSIsImlhdCI6MTU5MDQxNTkyNywiZXhwIjoxNTkwNDE1OTQ3LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.KKkTkAdXlqjSIaHNnUVbWfvpNFiEQWvAYIGmUV9dG2ouCqieyzKyygAujtcZySVTv8jKtPOhQ3uod0nG8gTqTg
-Username: vendor@gmail.com
+Username: raun@gmail.com
 
 
 ### ORDER ### create order

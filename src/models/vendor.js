@@ -31,7 +31,7 @@ let VendorSchema = new Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: false,
         minlength: 8
     },
     firstName: {
@@ -44,7 +44,7 @@ let VendorSchema = new Schema({
     },
     companyName: {
         type: String,
-        required: true,
+        required: false,
         unique: true
     },
     product: 
@@ -62,7 +62,7 @@ let VendorSchema = new Schema({
     },
     mobile: {
         type: Number,
-        required: true,
+        required: false,
         unique: true,
         maxlength: 10
     },
@@ -113,6 +113,11 @@ VendorSchema.pre("save", true , async function(next, done) {
          });
          });
     }
+    else{
+        done(null,this);
+        next();
+    }
+
 });
 
 VendorSchema.methods.setPassword= async (password, callback)=>{
@@ -122,7 +127,7 @@ VendorSchema.methods.setPassword= async (password, callback)=>{
    await bcrypt.genSalt(saltRounds, (err, salt) => {
        bcrypt.hash(password, saltRounds, (err, hash) => {
         if(hash.length>0){
-            callback({success: true, hash: hash});
+            callback({flag: true, hash: hash});
         }
     });
     });

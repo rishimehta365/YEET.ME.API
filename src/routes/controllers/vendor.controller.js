@@ -6,9 +6,10 @@ const passport = require('passport'),
       Email = require('email-templates'),
       generatePassword = require('password-generator');
 
+
+
 exports.register = async(req, res, next) => {
   const { body: { vendor } } = req;
-
   if(!vendor.email) {
     return res.status(422).json({
       errors: {
@@ -72,28 +73,82 @@ exports.login = (req, res, next) => {
     if(passportVendor) {
       return res.status(200).json({vendor: passportVendor.toAuthJSON()});
     }
-    return res.status(403).json({error: 'Unauthorized Access Denied!'});
+    return res.status(403).json({message:'Incorrect username or password.'});
+  })(req, res, next);
+}
+
+exports.googleAuth = (req,res,next)=>{
+  passport.authenticate('google', {
+    scope: ['profile','email']
   })(req, res, next);
 }
 
 
+exports.googleAuthRedirect = (req, res, next) =>{
+  passport.authenticate('google', (err, passportVendor, info) => {
+    if(err) {
+      return next(err);
+    }
+    if(passportVendor) {
+      return res.status(200).json({vendor: passportVendor.toAuthJSON()});
+    }
+    return res.status(401).json({message:'Unauthorized!'});
+  })(req, res, next);
+}
+
+
+/*
+* Reset Password:
+* verifies the email or vendor id, entered password
+* is updated for the respective vendor.
+*
+* author: Raunak Bhansali 
+*/
 exports.resetPassword = async(req, res, next) => {
   const { body: { vendor } } = req;
-
-  if(vendor.password === vendor.newPassword){
-    return res.status(400).json({error: "Cannot set current password"});
+  Vendor.findOne({email: vendor.email}).then((vendorData)=>{
+    if(vendorData){
+      const updatePassword = new Vendor(vendorData);
+      updatePassword.validatePassword(vendor.password, vendorData.password, (cb)=>{
+        if(cb.flag){
+          if(vendor.password === vendor.newPassword){
+            return res.status(400).json({message: "Cannot set last password as current password"});
+          }
+          updatePassword.setPassword(vendor.newPassword,(cb)=>{
+            if(cb.flag){
+              updatePassword.set("password", cb.hash);
+              Vendor.updateOne(
+                { "_id": updatePassword._id}, // Filter
+                {$set: {"password": updatePassword.password}}, // Update
+                {upsert: true}).then((data)=>{
+                  if(data){
+                    return res.status(200).json({message: "password reset successfully"});
+                  }
+              });
+           }
+        });
+        }
+        else{
+          return res.status(403).json({message: "please check current password"});
+        }
+      });
   }
-
-  await vendor.setPassword(vendor.newPassword, (cb)=>{
-    if(cb.success===constants.SUCCESS){
-      vendor.set("password", cb.hash);
-      console.log("New P: ", cb.hash);
+    else{
+      return res.status(400).json({message: "Email not found. Please check."})
     }
   });
 }
 
+/*
+* Forgot Password:
+* verifies the email, if exists a new password
+* is created and sends to provided email.
+*
+* author: Raunak Bhansali 
+*/
 exports.forgotPassword = (req, res, next) => {
-  const { body : {email} } = req;
+  const { body : { vendor } } = req;
+
   const emailTemplate = new Email({
     preview: false,
     // uncomment below to send emails in development/test env:
@@ -107,12 +162,13 @@ exports.forgotPassword = (req, res, next) => {
            pass: 'puppisinghji'
        }
    });
-  Vendor.findOne({email: email.email}).then((vendor)=>{
-    if(vendor){
-      const updatePassword = new Vendor(vendor);
+
+  Vendor.findOne({email: vendor.email}).then((vendorData)=>{
+    if(vendorData){
+      const updatePassword = new Vendor(vendorData);
       let generatedPassword = generatePassword(8, false);
       updatePassword.setPassword(generatedPassword,(cb)=>{
-        if(cb.success){
+        if(cb.flag){
           updatePassword.set("password", cb.hash);
           Vendor.updateOne(
             { "_id": updatePassword._id}, // Filter
@@ -129,16 +185,16 @@ exports.forgotPassword = (req, res, next) => {
                 
                 const mailOptions = {
                   from: 'rishimehta365@gmail.com', // sender address
-                  to: email.email, // list of receivers
+                  to: vendor.email, // list of receivers
                   subject: 'Password Reset', // Subject line
                   html: data.originalMessage.html // plain text body
                 };
                 
                 transporter.sendMail(mailOptions, function (err, info) {
                   if(err){
-                    return res.status(400).json("FAILED! Unable to send new password to your email.")
+                    return res.status(400).json({message: "FAILED! Unable to send new password to your email."});
                   }
-                  return res.status(200).json("New password has been sent successfully to your mail.")
+                  return res.status(200).json({message: "New password has been sent successfully to your mail."});
                 });
               })
               .catch(console.error);
@@ -147,7 +203,7 @@ exports.forgotPassword = (req, res, next) => {
     });
   }
     else{
-      return res.status(400).json("Email not found. Please check.")
+      return res.status(400).json({message: "Email not found. Please check."})
     }
   });
 }
