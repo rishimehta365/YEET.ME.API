@@ -46,12 +46,12 @@ const validateToken = async(req, res, next) =>{
 
   if(authorization && authorization.split(' ')[0] === 'Token') {
     // req.identity = {
-    //   permissions : ["user"]
+    //   permissions : ["customer"]
     // };
         let accessToken= authorization.split(' ')[1];
         try{
           let accessTokenDecoded = jwtoken.verify(accessToken, accessPublicKEY, verifyAccessOptions);
-          if(accessTokenDecoded && accessTokenDecoded.email_id === username){
+          if(accessTokenDecoded && accessTokenDecoded.email === username){
           next();
           }
           else{
@@ -82,12 +82,12 @@ const validateToken = async(req, res, next) =>{
                       issuer:  sOptions.issuer,
                       subject:  sOptions.subject,
                       audience:  sOptions.audience,
-                      expiresIn:  "20s",    // 20 secs validity
+                      expiresIn:  process.env.ACCESS_TOKEN_EXPIRY,    // 20 secs validity
                       algorithm:  "RS256"    // RSASSA [ "RS256", "RS384", "RS512" ]
                       };
 
                   let token=jwtoken.sign({
-                      email_id: refreshTokenDecoded.email_id,
+                      email: refreshTokenDecoded.email,
                       id: refreshTokenDecoded.id,
                       roles: refreshTokenDecoded.roles,
                       permissions: refreshTokenDecoded.permissions

@@ -1,21 +1,6 @@
 const mongoose = require('mongoose'),
 Location = require('../../models/location');
 
-
-  /* 
-  {
-	"order": {
-	  "name": "Joe",
-    "vendor": "Nilkamal",
-    "wing": "B",
-    "flat": "700",
-    "society": "Bhagwati",
-    "cart_in_kgs": "2.0",
-    "mobile_number": "7447477330"
-	}
-}
-  */
-
 exports.createLocation = (req, res, next) => {
   const { body: { location } } = req;
   const createLocation = new Location(location);

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const LocationSchema = new Schema({
-    location_name: {
+    name: {
         type: String
     },
     parent: {

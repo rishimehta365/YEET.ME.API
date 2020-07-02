@@ -8,21 +8,33 @@ cors = require('cors'),
 errorHandler = require('errorhandler'),
 mongoose = require('mongoose'),
 responseTime= require('response-time'),
-passport = require('passport');
-
+passport = require('passport'),
+isProduction = process.env.NODE_ENV === 'production',
+app = express(),
+server = require('http').Server(app),
+favicon = require('serve-favicon');
 
 
 mongoose.promise = global.Promise;
 
-const isProduction = process.env.NODE_ENV === 'production',
+var originWhitelist = [
+    'http://localhost:4200',
+    'https://accounts.google.com'
+];
 
-app = express();
-server = require('http').Server(app);
-favicon = require('serve-favicon');
+var corsOptions = {
+    origin: function(origin, callback){
+        var isWhiteListed = originWhitelist.indexOf(origin)!== -1;
+        callback(null, isWhiteListed);
+    },
+    credentials: true
+}
+
 app.use(favicon(path.join(__dirname, 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
-app.use(cors());
+app.use(cors(corsOptions));
+app.options('*', cors());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use(session({secret: 'secret', cookie: { maxAge: 60000, secure: true }, resave: false, saveUninitialized: false}));
@@ -34,12 +46,19 @@ if(!isProduction){
     app.use(errorHandler());
 }
 
-mongoose.connect("mongodb://srankings:srankings123@ds145750.mlab.com:45750/school-rankings", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.Promise = Promise;
+mongoose.connect("mongodb://durropit:durropit123@ds157136.mlab.com:57136/durropit", {useNewUrlParser: true, useUnifiedTopology: true})
+.then(()=>console.log('connected to the server'))
+.catch(err=> {
+    console.log(err.stack);
+    process.exit(1);
+})
 mongoose.set('debug', true);
 
-require('./models/user');
+
+require('./models/customer');
 require('./models/vendor');
-require('./models/milk');
+require('./models/product');
 require('./models/order');
 require('./models/society');
 require('./config/passport'); 

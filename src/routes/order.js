@@ -1,16 +1,9 @@
 const router = require('express').Router(),
-order_controller = require('./controllers/order.controller');
+order_controller = require('./controllers/order.controller'),
+auth = require('./auth');
 
+router.post('/create', auth.required, order_controller.createOrder);
 
-router.post('/create', order_controller.createOrder);
-
-// router.get('/', user_controller.getAllUsers);
-
-// router.get('/search/:vendor?', user_controller.searchVendorUser);
-
-// router.get('/:id', user_controller.getUserById);
-// router.delete('/:id',user_controller.deleteUser);
-
-// router.get('/find/:term?', auth.optional, schools_controller.getGeoLocSchools);
+router.get('/', auth.required, order_controller.getOrders);
 
 module.exports = router;

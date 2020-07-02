@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 
 let SocietySchema = new Schema({
-    society_name: {
+    name: {
         type: String
     },
     slug: {
