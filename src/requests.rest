@@ -114,14 +114,15 @@ Username: raun@gmail.com
 ### SOCIETY ### create society
 POST http://localhost:3000/api/v1/society/create/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWVkMWE2ZjdmYzE3YjA4MjQwZTlkMDIiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkyNzUwNjgxLCJleHAiOjE1OTI3NTA3MDEsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.gmr-DDS5KLAF0mV9R5PhUi6QmeJpN-gCHnguwMcSBj-_xSXWVRE4QTD46qByhv7HurNKNf3Gfaau9G5ilDOJhA
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWVkMWE2ZjdmYzE3YjA4MjQwZTlkMDIiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkzODY4MTk2LCJleHAiOjE1OTM4NjgyMTYsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.YQKcgqMW_jhX3Xk1S5M424ur2DuTqCD7uv_ROTe7SaYtvk0Dk2sPfCMSW_r6bWFLzFn87q_gWEfH0J3aHfwqjg
 Username: raun@gmail.com
 
 {
     "society": {
-        "name": "Akshay Park",
+        "name": "Blue Ridge",
         "city": "5eee00fb8ed1f82cd4e44617",
-        "state": "5eee00ee8ed1f82cd4e44616"
+        "state": "5eee00ee8ed1f82cd4e44616",
+        "vendor": "5ecd767c64a2050d00e52b2a"
 	}
 }
 
@@ -176,7 +177,6 @@ Username: raun@gmail.com
 }
 
 
-
 ### LOCATION ### create location
 POST http://localhost:3000/api/v1/location/create/
 Content-Type: application/json
@@ -185,10 +185,10 @@ Username: raun@gmail.com
 
 {
     "location": {
-        "name": "Rajasthan",
+        "name": "Mumbai",
         "parent": {
-            "_id": "5eee00d88ed1f82cd4e44615",
-            "name": "India"
+            "_id": "5eee00ee8ed1f82cd4e44616",
+            "name": "Maharashtra"
             }  
 	}
 }
@@ -229,4 +229,11 @@ Username: raun@gmail.com
 GET http://localhost:3000/api/v1/order?vendor=5ecd767c64a2050d00e52b2a
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWNkNzY3YzY0YTIwNTBkMDBlNTJiMmEiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkyNDQ0Nzc1LCJleHAiOjE1OTI0NDQ3OTUsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.joQAVVO9ZMq30Fk_2j9SQetTZ_FKVawCIRbD8n-0eaLiluXZHsKIy-vbezIssUkPd0BIdYHwzihieTN0w3gpHg
+Username: raun@gmail.com
+
+
+### VENDOR ### PUB SUB
+GET http://localhost:3000/api/v1/vendor/pub
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWVkMWE2ZjdmYzE3YjA4MjQwZTlkMDIiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkzODE2NjEwLCJleHAiOjE1OTM4MTY2MzAsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.ucV35w2UMyHT8gZrl9yOrIeNwKabekPZn0_B_ZXYijxr_FYQ_A5Zh01euMFfZH_YkRNxhSfeT2KPR3Fazz7dQQ
 Username: raun@gmail.com

@@ -44,14 +44,11 @@ const mongoose = require('mongoose'),
         vendor: req.query.vendor
     })
         .then((data) => {
-          if(!data) {
-            return res.sendStatus(400);
-          }
-          return res.json({products: data});
+          return res.status(200).json({products: data});
         });
   }
 
-  exports. updateProduct = (req, res ,next) =>{
+  exports.updateProduct = (req, res ,next) =>{
     const { body: { product } } = req;
     
     return Product.findByIdAndUpdate(req.params.id, product, {new:true}, (err, data) => {

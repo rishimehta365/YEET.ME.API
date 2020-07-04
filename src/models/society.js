@@ -1,15 +1,25 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-
-
 let SocietySchema = new Schema({
     name: {
+        type: String,
+        unique: true
+    },
+    description: {
         type: String
     },
     slug: {
         type: String
     },
+    vendor: {
+        type: Schema.Types.ObjectId,
+        ref: 'Vendor'
+    },
+    images: [{
+        url: String,
+        type: String
+    }],
     state: {
         type: Schema.Types.ObjectId,
         ref: 'Location'

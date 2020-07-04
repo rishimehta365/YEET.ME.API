@@ -23,22 +23,29 @@ var Society = require('../../models/society'),
   exports.getAllSocieties = (req, res, next) => {
 
     if(req.query.city === "undefined" || req.query.state === "undefined"){
-      return res.status(404).json('Please complete your profile!');
+      return res.status(404).json({message:'Location not found. Please update your profile!'});
     }
    
     return Society.find({
       $and: [
         { city: ObjectID(req.query.city) },
-        { state: ObjectID(req.query.state) }
+        { state: ObjectID(req.query.state) },
+        { vendor: req.query.vendor}
     ]
     })
         .then((data) => {
-          
-          if(!data || data.length<=0) {
-            console.log("Data: ", data);
-            return res.status(400).json("Add delivery society to continue...!\r\n" +"Go to Menu -> E-Commerce -> Society");
-          }
           return res.status(200).json({societies: data});
         });
+  }
+
+  exports.updateSociety = (req, res ,next) =>{
+    const { body: { society } } = req;
+    
+    return Society.findByIdAndUpdate(req.params.id, society, {new:true}, (err, data) => {
+      if (err) {
+        return next(err);
+      }
+      return res.json({society: data});
+    });
   }
 

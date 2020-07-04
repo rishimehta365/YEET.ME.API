@@ -4,7 +4,8 @@ const passport = require('passport'),
       nodemailer = require('nodemailer'),
       path = require('path'),
       Email = require('email-templates'),
-      generatePassword = require('password-generator');
+      generatePassword = require('password-generator'),
+      PubSub = require('pubsub-js');
 
 
 
@@ -90,7 +91,12 @@ exports.googleAuthRedirect = (req, res, next) =>{
       return next(err);
     }
     if(passportVendor) {
-      return res.status(200).json({vendor: passportVendor.toAuthJSON()});
+      //return res.status(200).json({vendor: passportVendor.toAuthJSON()});
+    var responseHTML = '<html><head><title>Main</title></head><body></body><script>res = %value%; window.opener.postMessage(res, "*");window.close();</script></html>'
+    responseHTML = responseHTML.replace('%value%', JSON.stringify({
+      vendor: passportVendor.toAuthJSON()
+    }));
+    res.status(200).send(responseHTML);
     }
     return res.status(401).json({message:'Unauthorized!'});
   })(req, res, next);
@@ -246,3 +252,19 @@ exports.updateVendor = (req, res ,next) =>{
   });
 }
 
+exports.pubsub = (req, res ,next) =>{
+  console.log("ENTEREEED!");
+  
+
+  var mySpecificSubscriber = function (msg, data) {
+    console.log('specific: ', data.price, data.id);
+}
+ 
+// subscribe only to 'car.drive' topics
+PubSub.subscribe('vendor', mySpecificSubscriber);
+ 
+// Publish some topics
+PubSub.publish('vendor', {id: '5eed1a6f7fc17b08240e9d02', price: '56'});
+
+
+}
