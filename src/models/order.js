@@ -1,22 +1,17 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const { Schema } = mongoose,
+Customer = require('../models/customer'),
+Vendor = require('../models/vendor'),
+Product = require('../models/product');
+
 
 let OrderSchema = new Schema({
     slug: {
         type: String
     },
-    customer: {
-        type: Schema.Types.ObjectId, 
-        ref: 'Customer'
-    },
-    vendor: { 
-        type: Schema.Types.ObjectId, 
-        ref: 'Vendor' 
-    },
-    product: { 
-        type: Schema.Types.ObjectId, 
-        ref: 'Product' 
-    },
+    customer: Customer.schema,
+    vendor: Vendor.schema,
+    product: Product.schema,
     cart: {
         type: Number,
         default: 1.0
@@ -41,7 +36,8 @@ let OrderSchema = new Schema({
             type: String
         },
         date : {
-            type: Date
+            type: Date,
+            default: Date.now
         }
     }]
 },

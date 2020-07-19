@@ -1,11 +1,12 @@
+
 ### CUSTOMERS ### authenticate a customer
 POST http://localhost:3000/api/v1/customer/login/
 Content-Type: application/json
 
 {
     "customer":{
-        "email_id": "raun@gmail.com",
-        "password": "raun@123"
+        "email": "vendor@gmail.com",
+        "password": "vendor@123"
     }
 }
 
@@ -22,25 +23,50 @@ Content-Type: application/json
 {
     "token": {
         "id": "5ec07215baa02d1b80725976",
-        "email_id": "raun@gmail.com",
+        "email": "raun@gmail.com",
         "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWMwNzIxNWJhYTAyZDFiODA3MjU5NzYiLCJleHAiOjE1ODk5MjQ4NzgsImlhdCI6MTU4OTkyMTI3OH0.h3sRhhE4SLfe-_cIOuH7Kt3uhy4sasGeZD0ceHj1Fx4"
     }
 }
 
 ###CUSTOMERS## update a customer
-PUT http://localhost:3000/api/v1/customer/update/5ec07215baa02d1b80725976/
+PUT http://localhost:3000/api/v1/customer/update/5f0a15f74d67874c98a85593/
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWMwNzIxNWJhYTAyZDFiODA3MjU5NzYiLCJpYXQiOjE1OTAyMjIyNDUsImV4cCI6MTU5MDIyMjI2NSwiYXVkIjoiQ2xpZW50X0lkZW50aXR5IiwiaXNzIjoiQXV0aG9yaXphdGlvbi9SZXNvdXJjZS9UaGlzIHNlcnZlciIsInN1YiI6InJhdW5AZ21haWwuY29tIn0.yPWde5oZtYMNfmUMmUjJMKE11aEWIIpTIl1u7_1NRJRRBahBeSeWEQcoBWZOHcRjUix5o6d40bv32fq1wGEp2Q
-Username: raun@gmail.com
+Username: vendor@gmail.com
 
 {
     "customer": {
-        "email_id": "raun@gmail.com",
-        "flat": "405",
-        "wing": "B"
+        "email": "vendor@gmail.com",
+        "shippingAddress": {
+            "apt_suite_etc": "405",
+            "wing": "B"
+    }
     }
 }
 
+### CUSTOMER ### create a customer
+POST http://localhost:3000/api/v1/customer/register
+Content-Type: application/json
+
+{
+    "customer": {
+        "email": "vendor@gmail.com",
+        "email_is_verified": false,
+        "password": "vendor@123",
+		"firstName": "Vendor",
+		"lastName": "Singh",
+        "society": "5f00bc4db9a01d97f9345ddc",
+        "shippingAddress": {
+            "apt_suite_etc": "405",
+            "wing": "B"
+        },
+        "state": "5eee00ee8ed1f82cd4e44616",
+        "city": "5eee00fb8ed1f82cd4e44617",
+        "mobile": "7387191619"
+	}
+}
+
+### ------------------------------------------------------------------------------------------- ###
 
 ### VENDOR ### create a vendor
 POST http://localhost:3000/api/v1/vendor/register/
@@ -111,17 +137,20 @@ Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW
 Username: raun@gmail.com
 
 
+### ------------------------------------------------------------------------------------------- ###
+
 ### SOCIETY ### create society
 POST http://localhost:3000/api/v1/society/create/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWVkMWE2ZjdmYzE3YjA4MjQwZTlkMDIiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkyNzUwNjgxLCJleHAiOjE1OTI3NTA3MDEsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.gmr-DDS5KLAF0mV9R5PhUi6QmeJpN-gCHnguwMcSBj-_xSXWVRE4QTD46qByhv7HurNKNf3Gfaau9G5ilDOJhA
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWVkMWE2ZjdmYzE3YjA4MjQwZTlkMDIiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkzODY4MTk2LCJleHAiOjE1OTM4NjgyMTYsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.YQKcgqMW_jhX3Xk1S5M424ur2DuTqCD7uv_ROTe7SaYtvk0Dk2sPfCMSW_r6bWFLzFn87q_gWEfH0J3aHfwqjg
 Username: raun@gmail.com
 
 {
     "society": {
-        "name": "Akshay Park",
+        "name": "Blue Ridge",
         "city": "5eee00fb8ed1f82cd4e44617",
-        "state": "5eee00ee8ed1f82cd4e44616"
+        "state": "5eee00ee8ed1f82cd4e44616",
+        "vendor": "5ecd767c64a2050d00e52b2a"
 	}
 }
 
@@ -130,6 +159,9 @@ GET http://localhost:3000/api/v1/society?state=5eee00ee8ed1f82cd4e44616&city=5ee
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWVkMWE2ZjdmYzE3YjA4MjQwZTlkMDIiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkyNjU2NjM2LCJleHAiOjE1OTI2NTY2NTYsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.H5Ms9ymsZAsJFlRlo3qF82P0MePlMq1SKzwK7VKHMaXOQZoLZcEzxzLC4r8CbkPiDIbi_9uVGR_1L7wo5cuBPA
 Username: raun@gmail.com
+
+
+### ------------------------------------------------------------------------------------------- ###
 
 ### PRODUCT ### create product
 POST http://localhost:3000/api/v1/product/create/
@@ -176,6 +208,7 @@ Username: raun@gmail.com
 }
 
 
+### ------------------------------------------------------------------------------------------- ###
 
 ### LOCATION ### create location
 POST http://localhost:3000/api/v1/location/create/
@@ -185,10 +218,10 @@ Username: raun@gmail.com
 
 {
     "location": {
-        "name": "Rajasthan",
+        "name": "Udaipur",
         "parent": {
-            "_id": "5eee00d88ed1f82cd4e44615",
-            "name": "India"
+            "_id": "5f0aca7d85689940fc316181",
+            "name": "Rajasthan"
             }  
 	}
 }
@@ -199,34 +232,49 @@ Content-Type: application/json
 Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVlYzk5OWY2MDUxOTA1M2Q4YzdmZjViOSIsImlhdCI6MTU5MDQxNTkyNywiZXhwIjoxNTkwNDE1OTQ3LCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.KKkTkAdXlqjSIaHNnUVbWfvpNFiEQWvAYIGmUV9dG2ouCqieyzKyygAujtcZySVTv8jKtPOhQ3uod0nG8gTqTg
 Username: raun@gmail.com
 
+### ------------------------------------------------------------------------------------------- ###
+
 
 ### ORDER ### create order
 POST http://localhost:3000/api/v1/order/create/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWM5MGVjZDlhMmJjODFlOGM0ZTdhYmUiLCJyb2xlcyI6InVzZXIiLCJwZXJtaXNzaW9ucyI6WyJyZWFkIl0sImlhdCI6MTU5MjQxNzIxMCwiZXhwIjoxNTkyNDE3MjMwLCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoicmF1bkBnbWFpbC5jb20ifQ.vKdJiVwa9b_s-CHqtiAWXzP7qgVVSXsNm3B16wEtUYcCFeOuP5jvy0GzwDiQcvGI4kvo_td7w9R0GKWemMPuLw
-Username: raun@gmail.com
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWVkMWE2ZjdmYzE3YjA4MjQwZTlkMDIiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTk0NDU3OTQwLCJleHAiOjE1OTQ0NTc5NjAsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.OB9wExy94-GHaPUvETXlAAXHNMI57MLfDSAlYWYHT1-l9gtxBXg24iS102pMqGDGJtD4SUMGs-KLML1pZrHRlQ
+Username: rishimehta365@gmail.com
 
  {
 	"order": {
-        "name": "Milk Order",
         "slug": "milk-order",
-        "comments": "Fresh 'n' Natural",
-        "customer": "5ec90ecd9a2bc81e8c4e7abe",
-        "vendor": "5ecd767c64a2050d00e52b2a",
-        "product": "5eea1aa4366fd27024157636",
-        "priceTaxIncl": "75.0",
-        "quantity": "2",
-        "wing": "B",
-        "flat": "405",
-        "society": {
-            "_id": "5ed93841bd7a4d1db48ba7d0"
-        },
-        "order_status": "Created"
+        "customer": "5f0a15f74d67874c98a85593",
+        "vendor": "5effa45ae5188404ac81e20b",
+        "product": "5f09c44b3c87778e1aca0ccf",
+        "price": "45.5",
+        "discount": "0.5",
+        "cart": "1.5",
+        "status": {
+            "name": "Shipped",
+            "color": "pink-500",
+            "date" : "2018/03/31 03:01:12"
+        }
 	}
 }
 
 ### ORDER ### get all orders by vendor id
-GET http://localhost:3000/api/v1/order?vendor=5ecd767c64a2050d00e52b2a
+GET http://localhost:3000/api/v1/order?vendor=5effa45ae5188404ac81e20b
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWNkNzY3YzY0YTIwNTBkMDBlNTJiMmEiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkyNDQ0Nzc1LCJleHAiOjE1OTI0NDQ3OTUsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.joQAVVO9ZMq30Fk_2j9SQetTZ_FKVawCIRbD8n-0eaLiluXZHsKIy-vbezIssUkPd0BIdYHwzihieTN0w3gpHg
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVmMDBjYzRkNDFmM2YyM2VjYzlhZGZiYSIsInJvbGVzIjoiY3VzdG9tZXIiLCJwZXJtaXNzaW9ucyI6WyJyZWFkIl0sImlhdCI6MTU5Mzg4ODI5MywiZXhwIjoxNTkzODg4MzEzLCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.sFmb1UwvMRcEqu8mj5nkHyR_EK7yVbEN_r_GmozUDi8Zmq9L7uiXGvaK0aOpO7ry0OidIYOTVqEEH8NyP7sH7A
+Username: vendor@gmail.com
+
+### ORDER ### get order by id
+GET http://localhost:3000/api/v1/order/5f09b0fbb3003742e89c5524
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZlbmRvckBnbWFpbC5jb20iLCJpZCI6IjVmMDBjYzRkNDFmM2YyM2VjYzlhZGZiYSIsInJvbGVzIjoiY3VzdG9tZXIiLCJwZXJtaXNzaW9ucyI6WyJyZWFkIl0sImlhdCI6MTU5Mzg4ODI5MywiZXhwIjoxNTkzODg4MzEzLCJhdWQiOiJDbGllbnRfSWRlbnRpdHkiLCJpc3MiOiJBdXRob3JpemF0aW9uL1Jlc291cmNlL1RoaXMgc2VydmVyIiwic3ViIjoidmVuZG9yQGdtYWlsLmNvbSJ9.sFmb1UwvMRcEqu8mj5nkHyR_EK7yVbEN_r_GmozUDi8Zmq9L7uiXGvaK0aOpO7ry0OidIYOTVqEEH8NyP7sH7A
+Username: vendor@gmail.com
+
+
+### ------------------------------------------------------------------------------------------- ###
+
+### VENDOR ### PUB SUB
+GET http://localhost:3000/api/v1/vendor/pub
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWVkMWE2ZjdmYzE3YjA4MjQwZTlkMDIiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkzODE2NjEwLCJleHAiOjE1OTM4MTY2MzAsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.ucV35w2UMyHT8gZrl9yOrIeNwKabekPZn0_B_ZXYijxr_FYQ_A5Zh01euMFfZH_YkRNxhSfeT2KPR3Fazz7dQQ
 Username: raun@gmail.com

@@ -9,4 +9,6 @@ router.get('/', auth.required, society_controller.getAllSocieties);
 
 router.get('/:id', auth.required, society_controller.getSocietyById);
 
+router.put('/update/:id', auth.required, society_controller.updateSociety);
+
 module.exports = router;

@@ -9,11 +9,15 @@ router.post('/login', auth.optional, vendor_controller.login);
 
 router.post('/reset', auth.optional, vendor_controller.resetPassword);
 
-router.post('/forgot', vendor_controller.forgotPassword);
+router.post('/forgot', auth.optional, vendor_controller.forgotPassword);
 
-router.get('/googleOAuth/', auth.optional, vendor_controller.googleAuth);
+router.get('/googleOAuth', auth.optional, vendor_controller.googleAuth);
 
-router.get('/googleOAuth/redirect/', auth.optional, vendor_controller.googleAuthRedirect);
+router.get('/googleOAuth/redirect', auth.optional, vendor_controller.googleAuthRedirect);
+
+router.post('/googleOAuth20', auth.optional, vendor_controller.googleOAuth20);
+
+router.get('/pub', vendor_controller.pubsub);
 
 router.get('/', auth.required, vendor_controller.getAllVendors);
 

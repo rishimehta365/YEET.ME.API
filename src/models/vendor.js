@@ -44,8 +44,11 @@ let VendorSchema = new Schema({
     },
     companyName: {
         type: String,
-        required: false,
-        unique: true
+        required: false
+    },
+    image: {
+        url: String,
+        type: String
     },
     product: 
     [{ 
@@ -86,6 +89,10 @@ let VendorSchema = new Schema({
         type: Array,
         required: true,
         default: ['read']
+    },
+    provider: {
+        type: String,
+        default: "SELF"
     },
     active: {
         type: Boolean,
@@ -230,6 +237,7 @@ VendorSchema.methods.toJSON = function(){
         email_is_verified: this.email_is_verified,
         firstName: this.firstName,
         lastName: this.lastName,
+        image: this.image,
         companyName: this.companyName,
         product: this.product,
         state: this.state,
@@ -239,6 +247,7 @@ VendorSchema.methods.toJSON = function(){
         gPay: this.gPay,
         roles: this.roles,
         permissions: this.permissions,
+        provider: this.provider,
         active: this.active
         };
     };

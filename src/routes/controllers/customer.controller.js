@@ -1,3 +1,5 @@
+const Society = require('../../models/society');
+
 const passport = require('passport'),
 mongoose = require('mongoose'),
 Customer = mongoose.model('Customer'),
@@ -35,10 +37,15 @@ exports.register = async (req, res, next) => {
     }
     else{
       const createCustomer = new Customer(customer);
-      await createCustomer.setPassword(customer.password, (cb)=>{
+      await createCustomer.setPassword(customer.password, async (cb)=>{
         if(cb.success===constants.SUCCESS){
           createCustomer.set("password", cb.hash);
-          return createCustomer.save()
+          await Society.findById(customer.society, (err, data)=>{
+            if(data){
+              createCustomer.society = data;
+            }
+          })
+          return await createCustomer.save()
             .then(() => res.status(201).json({ statusMessage: constants.ON_REGISTER_SUCCESS })
             ).catch((err)=> next(err)
           );

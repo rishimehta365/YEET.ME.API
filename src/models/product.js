@@ -18,6 +18,17 @@ let ProductSchema = new Schema({
         required: true,
         default: 0.0
     },
+
+    /*
+    How can I make the pricing dynamic without any need 
+    to implement scheduler?
+    Brainstorming.
+     */
+    priceType: {
+        type: String,
+        enum : ['STATIC','DYNAMIC'],
+        default: 'STATIC'
+    },
     images: [{
         url: String,
         type: String
@@ -34,7 +45,7 @@ let ProductSchema = new Schema({
     /*
     Still in question.
     Why do I need state and city in product?
-    I'm already creation product's relationship with its vendor.
+    I'm already creating product's relationship with its vendor.
     what's the need then?
     Brainstorming.
      */

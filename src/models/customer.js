@@ -7,7 +7,8 @@ jwt = require('jsonwebtoken'),
 asyncRedis = require("async-redis"),
 client = asyncRedis.createClient(),
 fs = require('fs'),
-path = require('path');
+path = require('path'),
+Society = require('../models/society');
 
 client.on("error", function (err) {
     console.log("Error " + err);
@@ -44,14 +45,14 @@ let CustomerSchema = new Schema({
     slug: {
         type: String
     },
-    society: {
-        type: Schema.Types.ObjectId, 
-        ref: 'Society' 
-    },
+    society: Society.schema,
     shippingAddress: {
-        address: {
+        apt_suite_etc: {
             type: String
-        }
+        },
+        wing: {
+            type: String
+        },
     },
     state: {
         type: Schema.Types.ObjectId,
@@ -192,16 +193,14 @@ CustomerSchema.methods.toAuthJSON = function(){
             _id: this._id,
             email: this.email,
             email_is_verified: this.email_is_verified,
-            first_name: this.first_name,
-            last_name: this.last_name,
-            vendor: this.vendor,
-            wing: this.wing,
-            flat: this.flat,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            slug: this.slug,
             society: this.society,
-            default_in_kgs: this.default_in_kgs,
-            city: this.city,
+            shippingAddress: this.shippingAddress,
             state: this.state,
-            mobile_number: this.mobile_number,
+            city: this.city,
+            mobile: this.mobile,
             roles: this.roles,
             permissions: this.permissions,
             active: this.active
