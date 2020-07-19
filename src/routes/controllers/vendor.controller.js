@@ -30,8 +30,7 @@ exports.register = async(req, res, next) => {
   await Vendor.find({
     $or: [
       {email: vendor.email}, 
-      {mobile: vendor.mobile},
-      {companyName: vendor.companyName}
+      {mobile: vendor.mobile}
     ]
   }).then(async (data,err)=>{
     if(data.length>0){
@@ -102,6 +101,27 @@ exports.googleAuthRedirect = (req, res, next) =>{
   })(req, res, next);
 }
 
+exports.googleOAuth20 = (req, res, next) =>{
+
+  const { body: { vendor } } = req;
+  
+  Vendor.findOne({email: vendor.email})
+    .exec()
+    .then((data)=>{
+        if(data){
+          return res.status(200).json({vendor: data.toAuthJSON()});
+        }
+        else{
+            const createVendor = new Vendor(vendor);
+            createVendor.save()
+            .then((data) => {
+              return res.status(200).json({vendor: createVendor.toAuthJSON()});
+            })
+            .catch((err)=> next(err));
+        }
+    })
+    .catch((error)=>next(error))
+  }
 
 /*
 * Reset Password:

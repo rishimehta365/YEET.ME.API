@@ -12,7 +12,8 @@ passport = require('passport'),
 isProduction = process.env.NODE_ENV === 'production',
 app = express(),
 server = require('http').Server(app),
-favicon = require('serve-favicon');
+favicon = require('serve-favicon'),
+helmet = require("helmet");;
 
 
 mongoose.promise = global.Promise;
@@ -34,17 +35,20 @@ app.use(favicon(path.join(__dirname, 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(cors(corsOptions));
+
 app.options('*', cors());
+
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+
 app.use(session({secret: 'secret', cookie: { maxAge: 60000, secure: true }, resave: false, saveUninitialized: false}));
 app.use(responseTime());
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-if(!isProduction){
-    app.use(errorHandler());
-}
+app.use(helmet());
+
 
 mongoose.Promise = Promise;
 mongoose.connect("mongodb://durropit:durropit123@ds157136.mlab.com:57136/durropit", {useNewUrlParser: true, useUnifiedTopology: true})
@@ -65,6 +69,8 @@ require('./config/passport');
 app.use(require('./routes'));
 
 if(!isProduction){
+    app.use(errorHandler());
+
     app.use((err, req, res, next) => {
         err.statusCode = err.statusCode || 500;
         err.status = err.status || 'error';

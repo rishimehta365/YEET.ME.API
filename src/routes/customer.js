@@ -15,10 +15,10 @@ router.post('/register', auth.optional, customer_controller.register);
 
 router.post('/token', auth.optional, customer_controller.token);
 
-router.get('/search/:vendor?', customer_controller.searchVendorCustomer);
+// router.get('/search/:vendor?', auth.optional, customer_controller.searchVendorCustomer);
 
 router.get('/:id', auth.required, customer_controller.getCustomerById);
 
-router.put('/update/:id', auth.required, customer_controller.updateCustomer);
+router.put('/update/:id', auth.optional, customer_controller.updateCustomer);
 
 module.exports = router;

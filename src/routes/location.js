@@ -1,11 +1,11 @@
-const router = require('express').Router(),
+const auth = require('./auth'),
+router = require('express').Router(),
 location_controller = require('./controllers/location.controller');
 
+router.post('/create', auth.optional, location_controller.createLocation);
 
-router.post('/create', location_controller.createLocation);
+router.get('/:id', auth.required, location_controller.getLocationById);
 
-router.get('/:id', location_controller.getLocationById);
-
-router.get('/parent/:id', location_controller.getLocationByParentId);
+router.get('/parent/:id', auth.required, location_controller.getLocationByParentId);
 
 module.exports = router;
