@@ -1,22 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-
-
-let ProductSchema = new Schema({
+let ProductSchema = new Schema(
+  {
     name: {
-        type: String
+      type: String,
     },
     slug: {
-        type: String
+      type: String,
     },
     description: {
-        type: String
+      type: String,
     },
     priceTaxIncl: {
-        type: Number,
-        required: true,
-        default: 0.0
+      type: Number,
+      required: true,
+      default: 0.0,
     },
 
     /*
@@ -25,22 +24,26 @@ let ProductSchema = new Schema({
     Brainstorming.
      */
     priceType: {
-        type: String,
-        enum : ['STATIC','DYNAMIC'],
-        default: 'STATIC'
+      type: String,
+      enum: ["STATIC", "DYNAMIC"],
+      default: "STATIC",
     },
-    images: [{
+    images: [
+      {
         url: String,
-        type: String
-    }],
-    vendor: { 
-        type: Schema.Types.ObjectId, 
-        ref: 'Vendor' 
+        type: String,
+      },
+    ],
+    vendor: {
+      type: Schema.Types.ObjectId,
+      ref: "Vendor",
     },
-    society: [{ 
-        type: Schema.Types.ObjectId, 
-        ref: 'Society' 
-    }],
+    society: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Society",
+      },
+    ],
 
     /*
     Still in question.
@@ -50,25 +53,26 @@ let ProductSchema = new Schema({
     Brainstorming.
      */
     state: {
-        type: Schema.Types.ObjectId,
-        ref: 'Location'
+      type: Schema.Types.ObjectId,
+      ref: "Location",
     },
     city: {
-        type: Schema.Types.ObjectId,
-        ref: 'Location'
+      type: Schema.Types.ObjectId,
+      ref: "Location",
     },
-     /*
+    /*
     ----ENDS HERE--- 
      */
     active: {
-        type: Boolean,
-        required: true,
-        default: true
-    }
-},
-{
-    timestamps: true
-});
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-var Product = mongoose.model('Product', ProductSchema);
+var Product = mongoose.model("Product", ProductSchema);
 module.exports = Product;

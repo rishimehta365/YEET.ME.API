@@ -1,16 +1,18 @@
-const Society = require('../../models/society');
+const Society = require("../../models/society");
 
-const passport = require('passport'),
-mongoose = require('mongoose'),
-Customer = mongoose.model('Customer'),
-constants = require('../../constants/constants');
+const passport = require("passport"),
+  mongoose = require("mongoose"),
+  Customer = mongoose.model("Customer"),
+  constants = require("../../constants/constants");
 
-require('dotenv').config();
+require("dotenv").config();
 
 exports.register = async (req, res, next) => {
-  const { body: { customer } } = req;
+  const {
+    body: { customer },
+  } = req;
 
-  if(!customer.email) {
+  if (!customer.email) {
     return res.status(422).json({
       errors: {
         email: constants.IS_REQUIRED,
@@ -18,7 +20,7 @@ exports.register = async (req, res, next) => {
     });
   }
 
-  if(!customer.password) {
+  if (!customer.password) {
     return res.status(422).json({
       errors: {
         password: constants.IS_REQUIRED,
@@ -27,135 +29,147 @@ exports.register = async (req, res, next) => {
   }
 
   await Customer.find({
-    $or: [
-      {email: customer.email}, 
-      {mobile: customer.mobile}
-    ]
-  }).then(async (data) =>{
-    if(data.length>0){
+    $or: [{ email: customer.email }, { mobile: customer.mobile }],
+  }).then(async (data) => {
+    if (data.length > 0) {
       return res.status(409).json({ error: constants.CUSTOMER_EXIST });
-    }
-    else{
+    } else {
       const createCustomer = new Customer(customer);
-      await createCustomer.setPassword(customer.password, async (cb)=>{
-        if(cb.success===constants.SUCCESS){
+      await createCustomer.setPassword(customer.password, async (cb) => {
+        if (cb.success === constants.SUCCESS) {
           createCustomer.set("password", cb.hash);
-          await Society.findById(customer.society, (err, data)=>{
-            if(data){
+          await Society.findById(customer.society, (err, data) => {
+            if (data) {
               createCustomer.society = data;
             }
-          })
-          return await createCustomer.save()
-            .then(() => res.status(201).json({ statusMessage: constants.ON_REGISTER_SUCCESS })
-            ).catch((err)=> next(err)
-          );
+          });
+          return await createCustomer
+            .save()
+            .then(() =>
+              res
+                .status(201)
+                .json({ statusMessage: constants.ON_REGISTER_SUCCESS })
+            )
+            .catch((err) => next(err));
         }
       });
     }
   });
-}
-
+};
 
 exports.login = (req, res, next) => {
-  const { body: { customer } } = req;
+  const {
+    body: { customer },
+  } = req;
 
-  if(!customer.email) {
+  if (!customer.email) {
     return res.status(422).json({
       errors: {
-        email: 'is required',
+        email: "is required",
       },
     });
   }
 
-  if(!customer.password) {
+  if (!customer.password) {
     return res.status(422).json({
       errors: {
-        password: 'is required',
+        password: "is required",
       },
     });
   }
 
-  return passport.authenticate('customerLocal', { session: false }, (err, passportCustomer, info) => {
-    if(err) {
-      console.log("Info", info);
-      return next(err);
+  return passport.authenticate(
+    "customerLocal",
+    { session: false },
+    (err, passportCustomer, info) => {
+      if (err) {
+        console.log("Info", info);
+        return next(err);
+      }
+      if (passportCustomer) {
+        return res
+          .status(200)
+          .json({ customer: passportCustomer.toAuthJSON() });
+      }
+      return res.status(403).json({ error: "Unauthorized Access Denied!" });
     }
-    if(passportCustomer) {
-      return res.status(200).json({customer: passportCustomer.toAuthJSON()});
-    }
-    return res.status(403).json({error: 'Unauthorized Access Denied!'});
-  })(req, res, next);
-}
+  )(req, res, next);
+};
 
-
-exports.token = (req, res, next)=>{
-  const { body: { token } } = req;
+exports.token = (req, res, next) => {
+  const {
+    body: { token },
+  } = req;
   let id = token.id,
-  email = token.email,
-  refreshToken = token.refreshToken;
+    email = token.email,
+    refreshToken = token.refreshToken;
 
-  if(refreshToken == null){
-    return res.status(401).json({error: "Unauthorized!"});
+  if (refreshToken == null) {
+    return res.status(401).json({ error: "Unauthorized!" });
   }
-   
-  if(refreshToken){
-    const customerToken = new Customer({customer: {_id: id, email: email}});
+
+  if (refreshToken) {
+    const customerToken = new Customer({ customer: { _id: id, email: email } });
     const token = customerToken.generateAccessJWT();
-    return res.status(201).json({token: token});
+    return res.status(201).json({ token: token });
   }
-
-}
+};
 
 exports.getCustomerById = (req, res, next) => {
   return Customer.findById(req.params.id, (err, data) => {
     if (err) {
       return next(err);
     }
-    return res.json({customer: data});
+    return res.json({ customer: data });
   });
-}
+};
 
 exports.getAllCustomers = (req, res, next) => {
-  return Customer.find()
-      .then((data) => {
-        if(!data) {
-          return res.sendStatus(400);
-        }
-        return res.json({customer: data});
-      });
-}
+  return Customer.find().then((data) => {
+    if (!data) {
+      return res.sendStatus(400);
+    }
+    return res.json({ customer: data });
+  });
+};
 
-exports.updateCustomer = (req, res ,next) =>{
-  const { body: { customer } } = req;
+exports.updateCustomer = (req, res, next) => {
+  const {
+    body: { customer },
+  } = req;
 
-  if(!customer.email) {
+  if (!customer.email) {
     return res.status(422).json({
       errors: {
-        email: 'is required',
+        email: "is required",
       },
     });
   }
 
-  return Customer.findByIdAndUpdate(req.params.id, customer, {new:true}, (err, data) => {
-    if (err) {
-      return next(err);
+  return Customer.findByIdAndUpdate(
+    req.params.id,
+    customer,
+    { new: true },
+    (err, data) => {
+      if (err) {
+        return next(err);
+      }
+      return res.json({ customer: data });
     }
-    return res.json({customer: data});
-  });
-}
+  );
+};
 
 exports.searchVendorCustomer = (req, res, next) => {
   let term = req.params.vendor;
   if (term) {
     Customer.find({
-      vendor: term
-    })
-      .exec((err, data) => {
-        if (err) {
-          return next(err);
-        }
-        return res.json(data);
-      });
+      vendor: term,
+    }).exec((err, data) => {
+      if (err) {
+        return next(err);
+      }
+      return res.json(data);
+    });
   } else {
     Customer.find((err, data) => {
       if (err) {
@@ -165,5 +179,3 @@ exports.searchVendorCustomer = (req, res, next) => {
     });
   }
 };
-
-

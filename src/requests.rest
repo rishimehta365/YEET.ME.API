@@ -1,32 +1,9 @@
 
-### CUSTOMERS ### authenticate a customer
-POST http://localhost:3000/api/v1/customer/login/
-Content-Type: application/json
-
-{
-    "customer":{
-        "email": "vendor@gmail.com",
-        "password": "vendor@123"
-    }
-}
-
 ### CUSTOMERS ### get all customers
 GET http://localhost:3000/api/v1/customer/
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWMwNzIxNWJhYTAyZDFiODA3MjU5NzYiLCJpYXQiOjE1OTAyMjY1ODEsImV4cCI6MTU5MDIyNjYwMSwiYXVkIjoiQ2xpZW50X0lkZW50aXR5IiwiaXNzIjoiQXV0aG9yaXphdGlvbi9SZXNvdXJjZS9UaGlzIHNlcnZlciIsInN1YiI6InJhdW5AZ21haWwuY29tIn0.pEqqeK2khHPPeJTS8FLeyEFA1MgZ-Z2p_EyR0u5zLp4QQJKI7iGfF0DYkPOD74kqdAXEaCADV9ltsU-Kge6vbg
 Username: raun@gmail.com
-
-###CUSTOMERS## retrieve access token
-POST http://localhost:3000/api/v1/customer/token/
-Content-Type: application/json
-
-{
-    "token": {
-        "id": "5ec07215baa02d1b80725976",
-        "email": "raun@gmail.com",
-        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWMwNzIxNWJhYTAyZDFiODA3MjU5NzYiLCJleHAiOjE1ODk5MjQ4NzgsImlhdCI6MTU4OTkyMTI3OH0.h3sRhhE4SLfe-_cIOuH7Kt3uhy4sasGeZD0ceHj1Fx4"
-    }
-}
 
 ###CUSTOMERS## update a customer
 PUT http://localhost:3000/api/v1/customer/update/5f0a15f74d67874c98a85593/
@@ -87,40 +64,17 @@ Content-Type: application/json
 	}
 }
 
-### VENDOR ### reset vendor password
-POST http://localhost:3000/api/v1/vendor/reset/
+### VENDOR ### send vendor feedback
+POST http://localhost:3000/api/v1/vendor/feedback
 Content-Type: application/json
 
 {
     "vendor": {
-        "email": "raun@gmail.com",
-        "password": "raun@123",
-		"newPassword": "raun@123",
-        "roles": "vendor",
-        "permissions": ["read"]
+        "email": "rishimehta365@gmail.com",
+        "name": "Rishi",
+		"mobile": "7387191619",
+        "subject": "You serve as an exemplary role model by consistently demonstrating a commitment to upholding company values, and encouraging others to do the same."
 	}
-}
-
-### VENDOR ### forgot vendor password
-POST  http://localhost:3000/api/v1/vendor/forgot/
-Content-Type: application/json
-
-{
-    "email": {
-        "email": "bhansaliraunak@gmail.com"
-	}
-}
-
-
-### VENDOR ### authenticate a vendor
-POST http://localhost:3000/api/v1/vendor/login/
-Content-Type: application/json
-
-{
-    "vendor":{
-        "email": "raun@gmail.com",
-        "password": "raun@123"
-    }
 }
 
 ### VENDOR ### get all vendors
@@ -278,3 +232,5 @@ GET http://localhost:3000/api/v1/vendor/pub
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdW5AZ21haWwuY29tIiwiaWQiOiI1ZWVkMWE2ZjdmYzE3YjA4MjQwZTlkMDIiLCJyb2xlcyI6InZlbmRvciIsInBlcm1pc3Npb25zIjpbInJlYWQiXSwiaWF0IjoxNTkzODE2NjEwLCJleHAiOjE1OTM4MTY2MzAsImF1ZCI6IkNsaWVudF9JZGVudGl0eSIsImlzcyI6IkF1dGhvcml6YXRpb24vUmVzb3VyY2UvVGhpcyBzZXJ2ZXIiLCJzdWIiOiJyYXVuQGdtYWlsLmNvbSJ9.ucV35w2UMyHT8gZrl9yOrIeNwKabekPZn0_B_ZXYijxr_FYQ_A5Zh01euMFfZH_YkRNxhSfeT2KPR3Fazz7dQQ
 Username: raun@gmail.com
+
+### ------------------------------------------------------------------------------------------- ###

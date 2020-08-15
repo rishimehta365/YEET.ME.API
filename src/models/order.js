@@ -1,49 +1,52 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose,
-Customer = require('../models/customer'),
-Vendor = require('../models/vendor'),
-Product = require('../models/product');
+  Customer = require("../models/customer"),
+  Vendor = require("../models/vendor"),
+  Product = require("../models/product");
 
-
-let OrderSchema = new Schema({
+let OrderSchema = new Schema(
+  {
     slug: {
-        type: String
+      type: String,
     },
     customer: Customer.schema,
     vendor: Vendor.schema,
     product: Product.schema,
     cart: {
-        type: Number,
-        default: 1.0
+      type: Number,
+      default: 1.0,
     },
     price: {
-        type: Number,
-        default: 0
+      type: Number,
+      default: 0,
     },
     discount: {
-        type: Number,
-        required: true,
-        default: 0.0
+      type: Number,
+      required: true,
+      default: 0.0,
     },
     total: {
-        type: Number
+      type: Number,
     },
-    status: [{
+    status: [
+      {
         name: {
-            type: String
+          type: String,
         },
         color: {
-            type: String
+          type: String,
         },
-        date : {
-            type: Date,
-            default: Date.now
-        }
-    }]
-},
-{
-    timestamps: true
-});
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
 
-var Orders = mongoose.model('Order', OrderSchema);
+var Orders = mongoose.model("Order", OrderSchema);
 module.exports = Orders;
